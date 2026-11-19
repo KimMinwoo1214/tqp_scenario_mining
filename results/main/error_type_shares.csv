@@ -1,0 +1,7 @@
+condition,method,correct,direction,relation_type,unclassified,invalid,other
+balanced,B2,0.545,0.037,0.159,0.258,0.001,0.0
+balanced,P,0.556,0.2,0.06,0.018,0.166,0.0
+counterbalanced,B2,0.558,0.081,0.075,0.286,0.0,0.0
+counterbalanced,P,0.354,0.213,0.115,0.15,0.167,0.0
+zero_shot,B2,0.018,0.032,0.039,0.282,0.625,0.004
+zero_shot,P,0.004,0.0,0.0,0.0,0.996,0.0

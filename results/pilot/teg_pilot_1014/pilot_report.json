@@ -1,0 +1,320 @@
+{
+  "version": "0.1.0",
+  "assumptions": {
+    "THEN_max_gap_seconds": 5.0,
+    "THEN_overlap_tolerance_seconds": 0.5,
+    "WHILE_min_overlap_seconds_strict": 0.5,
+    "WHILE_shorter_interval_ratio": 0.8,
+    "backend": "Python adjacency/index, no Neo4j, no GraphRAG"
+  },
+  "event_count": 21,
+  "track_count": 48,
+  "graph": {
+    "event_nodes": 21,
+    "track_nodes": 48,
+    "typed_relation_edges": 3,
+    "directed_candidate_pairs_evaluated": 12,
+    "edges_by_type": {
+      "THEN": 1,
+      "WHILE": 2
+    }
+  },
+  "graph_build_ms": 0.286,
+  "graph_build_peak_tracemalloc_kib": 8.56,
+  "mean_interval_query_ms": 0.03027,
+  "mean_graph_query_ms": 0.01996,
+  "estimated_break_even_query_count": 28,
+  "query_count": 10,
+  "repeat_for_microbenchmark": 30,
+  "all_query_results_equal": true,
+  "per_query": [
+    {
+      "query": "DECELERATE THEN TURN",
+      "tqp": {
+        "events": {
+          "e1": "DECELERATE",
+          "e2": "TURN"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 46,
+        "UNCERTAIN": 1,
+        "PARTIAL": 1
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "TURN THEN DECELERATE",
+      "tqp": {
+        "events": {
+          "e1": "TURN",
+          "e2": "DECELERATE"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 46,
+        "UNCERTAIN": 1,
+        "PARTIAL": 1
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "DECELERATE WHILE TURN",
+      "tqp": {
+        "events": {
+          "e1": "DECELERATE",
+          "e2": "TURN"
+        },
+        "relation": {
+          "op": "WHILE",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 46,
+        "UNCERTAIN": 1,
+        "PARTIAL": 1
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "TURN WHILE DECELERATE",
+      "tqp": {
+        "events": {
+          "e1": "TURN",
+          "e2": "DECELERATE"
+        },
+        "relation": {
+          "op": "WHILE",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 46,
+        "UNCERTAIN": 1,
+        "PARTIAL": 1
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "DECELERATE THEN STOP",
+      "tqp": {
+        "events": {
+          "e1": "DECELERATE",
+          "e2": "STOP"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 48
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "STOP THEN DECELERATE",
+      "tqp": {
+        "events": {
+          "e1": "STOP",
+          "e2": "DECELERATE"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 48
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "DECELERATE THEN ACCELERATE",
+      "tqp": {
+        "events": {
+          "e1": "DECELERATE",
+          "e2": "ACCELERATE"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 48
+      },
+      "positive_track_ids": []
+    },
+    {
+      "query": "ACCELERATE THEN DECELERATE",
+      "tqp": {
+        "events": {
+          "e1": "ACCELERATE",
+          "e2": "DECELERATE"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 47,
+        "POSITIVE": 1
+      },
+      "positive_track_ids": [
+        [
+          "02678d04-cc9f-3148-9f95-1ba66347dff9",
+          "8a04afdc-2489-40b9-9f03-aace87e4362d"
+        ]
+      ]
+    },
+    {
+      "query": "ACCELERATE WHILE TURN",
+      "tqp": {
+        "events": {
+          "e1": "ACCELERATE",
+          "e2": "TURN"
+        },
+        "relation": {
+          "op": "WHILE",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 46,
+        "UNCERTAIN": 1,
+        "POSITIVE": 1
+      },
+      "positive_track_ids": [
+        [
+          "02678d04-cc9f-3148-9f95-1ba66347dff9",
+          "f291125f-a06f-4f1e-af9b-7fa142c97223"
+        ]
+      ]
+    },
+    {
+      "query": "TURN THEN ACCELERATE",
+      "tqp": {
+        "events": {
+          "e1": "TURN",
+          "e2": "ACCELERATE"
+        },
+        "relation": {
+          "op": "THEN",
+          "args": [
+            "e1",
+            "e2"
+          ]
+        }
+      },
+      "equal": true,
+      "mismatches": [],
+      "track_status_count": {
+        "NEGATIVE": 47,
+        "UNCERTAIN": 1
+      },
+      "positive_track_ids": []
+    }
+  ],
+  "data_source": "av2_real_annotations",
+  "av2_log_diagnostics": [
+    {
+      "log": "02678d04-cc9f-3148-9f95-1ba66347dff9",
+      "annotations_vehicle_rows": 3648,
+      "annotations_without_nearby_pose": 0,
+      "pose_match_rate": 1.0,
+      "vehicle_tracks": 43,
+      "eligible_moving_tracks": 15,
+      "detected_events": 14,
+      "max_pose_time_difference_ms": 0.0
+    },
+    {
+      "log": "02a00399-3857-444e-8db3-a8f58489c394",
+      "annotations_vehicle_rows": 2400,
+      "annotations_without_nearby_pose": 0,
+      "pose_match_rate": 1.0,
+      "vehicle_tracks": 36,
+      "eligible_moving_tracks": 15,
+      "detected_events": 4,
+      "max_pose_time_difference_ms": 0.0
+    },
+    {
+      "log": "04994d08-156c-3018-9717-ba0e29be8153",
+      "annotations_vehicle_rows": 8437,
+      "annotations_without_nearby_pose": 0,
+      "pose_match_rate": 1.0,
+      "vehicle_tracks": 96,
+      "eligible_moving_tracks": 18,
+      "detected_events": 3,
+      "max_pose_time_difference_ms": 0.0
+    }
+  ],
+  "acquisition": {
+    "source": "official_s3_av2_sensor",
+    "av2_root": "/content/av2_teg_stage",
+    "log_count": 3,
+    "original_log_directories": [
+      "/content/drive/MyDrive/AV2_TEG_Pilot_Data/s3/val/02678d04-cc9f-3148-9f95-1ba66347dff9",
+      "/content/drive/MyDrive/AV2_TEG_Pilot_Data/s3/val/02a00399-3857-444e-8db3-a8f58489c394",
+      "/content/drive/MyDrive/AV2_TEG_Pilot_Data/s3/val/04994d08-156c-3018-9717-ba0e29be8153"
+    ],
+    "split_requested": "val",
+    "data_kind": "AV2 Sensor per-log object annotations and ego pose"
+  },
+  "source_verification": "actual_AV2_Sensor_annotations_feather_and_ego_pose"
+}

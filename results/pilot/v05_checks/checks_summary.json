@@ -1,0 +1,93 @@
+{
+  "pred_csv": "/content/drive/MyDrive/AV2_TQP_TEG_Results/v04_val_20261016_045848/llm_predictions_v04.csv",
+  "check1_b2_while": {
+    "balanced": {
+      "FAIL": 0,
+      "INTERP": 16,
+      "MIXED": 0,
+      "NONE": 0,
+      "OK": 32
+    },
+    "counterbalanced": {
+      "FAIL": 0,
+      "INTERP": 48,
+      "MIXED": 0,
+      "NONE": 0,
+      "OK": 0
+    },
+    "zero_shot": {
+      "FAIL": 10,
+      "INTERP": 16,
+      "MIXED": 10,
+      "NONE": 9,
+      "OK": 3
+    }
+  },
+  "check2_v05": [
+    {
+      "variant": "zero_shot",
+      "method": "B2 (Python)",
+      "n": 288.0,
+      "v04_exact": 0.069,
+      "v04_probe_exact": 0.017,
+      "v05_interp": 0.073,
+      "v05_judge": 0.003,
+      "impl_err": 0.069
+    },
+    {
+      "variant": "zero_shot",
+      "method": "P (TQP)",
+      "n": 288.0,
+      "v04_exact": 0.177,
+      "v04_probe_exact": 0.177,
+      "v05_interp": 0.177,
+      "v05_judge": 0.177,
+      "impl_err": 0.0
+    },
+    {
+      "variant": "balanced",
+      "method": "B2 (Python)",
+      "n": 288.0,
+      "v04_exact": 0.854,
+      "v04_probe_exact": 0.854,
+      "v05_interp": 0.854,
+      "v05_judge": 0.854,
+      "impl_err": 0.0
+    },
+    {
+      "variant": "balanced",
+      "method": "P (TQP)",
+      "n": 288.0,
+      "v04_exact": 0.913,
+      "v04_probe_exact": 0.913,
+      "v05_interp": 0.913,
+      "v05_judge": 0.913,
+      "impl_err": 0.0
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "B2 (Python)",
+      "n": 288.0,
+      "v04_exact": 0.726,
+      "v04_probe_exact": 0.726,
+      "v05_interp": 0.726,
+      "v05_judge": 0.726,
+      "impl_err": 0.0
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "P (TQP)",
+      "n": 288.0,
+      "v04_exact": 0.681,
+      "v04_probe_exact": 0.681,
+      "v05_interp": 0.681,
+      "v05_judge": 0.681,
+      "impl_err": 0.0
+    }
+  ],
+  "check3_refav_commit": "5c5be6439ce59b61a31d56431a79a8a04bba33fa",
+  "check3_temporal_api_candidates": [
+    "being_crossed_by",
+    "following"
+  ]
+}

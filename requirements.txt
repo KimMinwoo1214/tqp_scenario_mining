@@ -1,0 +1,12 @@
+# Colab default image covers torch, transformers, pandas, numpy, scipy, matplotlib, pyarrow
+torch
+transformers
+accelerate
+pandas
+numpy
+scipy
+matplotlib
+pyarrow
+statsmodels
+boto3
+openpyxl

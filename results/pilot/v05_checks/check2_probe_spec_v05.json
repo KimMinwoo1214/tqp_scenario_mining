@@ -1,0 +1,51 @@
+{
+  "interp_probes": [
+    "then_xy",
+    "then_yx",
+    "while_same",
+    "x_other",
+    "other_y"
+  ],
+  "impl_probes": [
+    "far",
+    "then_gap45",
+    "then_ovl03",
+    "while_unequal",
+    "partial",
+    "only_x",
+    "only_y",
+    "other"
+  ],
+  "expect": {
+    "THEN": {
+      "then_xy": true,
+      "then_yx": false,
+      "while_same": false,
+      "x_other": false,
+      "other_y": false,
+      "far": false,
+      "then_gap45": true,
+      "then_ovl03": true,
+      "while_unequal": false,
+      "partial": false,
+      "only_x": false,
+      "only_y": false,
+      "other": false
+    },
+    "WHILE": {
+      "then_xy": false,
+      "then_yx": false,
+      "while_same": true,
+      "x_other": false,
+      "other_y": false,
+      "far": false,
+      "then_gap45": false,
+      "then_ovl03": false,
+      "while_unequal": true,
+      "partial": false,
+      "only_x": false,
+      "only_y": false,
+      "other": false
+    }
+  }
+}

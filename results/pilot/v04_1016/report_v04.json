@@ -1,0 +1,336 @@
+{
+  "engine": "0.3.0+v0.4-cells",
+  "detector_v04": {
+    "window": 11,
+    "polyorder": 2,
+    "max_gap_s": 0.25,
+    "min_segment_s": 3.0,
+    "min_displacement_m": 3.0,
+    "edge_trim_s": 0.5,
+    "merge_gap_s": 1.0,
+    "accel_mask_threshold": 0.5,
+    "accel_peak_threshold": 1.0,
+    "min_accel_duration_s": 0.5,
+    "min_speed_change": 1.5,
+    "gentle_min_duration_s": 2.0,
+    "gentle_min_speed_change": 2.0,
+    "stop_speed": 0.5,
+    "min_stop_duration_s": 1.0,
+    "turn_rate_deg_s": 5.0,
+    "min_turn_deg": 45.0,
+    "min_turn_travel_m": 5.0,
+    "min_turn_speed": 1.0,
+    "jitter_window_s": 1.5,
+    "jitter_return_frac": 0.3,
+    "use_jitter_filter": true,
+    "turn_mask_min_speed": 1.5
+  },
+  "detector_quality": {
+    "v0.2": {
+      "moving_tracks": 3531.0,
+      "tracks_with_events": 1958.0,
+      "events": 3269.0,
+      "clipped_event_rate": 0.251,
+      "consecutive_same_type_pairs": 368.0,
+      "same_type_gap_le_1s": 87.0,
+      "events_TURN": 335.0,
+      "events_DECELERATE": 1005.0,
+      "events_ACCELERATE": 986.0,
+      "events_STOP": 943.0,
+      "median_dur_TURN": 4.7,
+      "median_dur_DECELERATE": 2.0,
+      "median_dur_ACCELERATE": 2.1,
+      "median_dur_STOP": 3.7,
+      "relation_edges": 1527.0,
+      "ACCEL_WHILE_DECEL_edges(불가능)": 0.0
+    },
+    "v0.3": {
+      "moving_tracks": 3172.0,
+      "tracks_with_events": 2262.0,
+      "events": 3892.0,
+      "clipped_event_rate": 0.377,
+      "consecutive_same_type_pairs": 320.0,
+      "same_type_gap_le_1s": 0.0,
+      "events_TURN": 337.0,
+      "events_DECELERATE": 1307.0,
+      "events_ACCELERATE": 1333.0,
+      "events_STOP": 915.0,
+      "median_dur_TURN": 4.8,
+      "median_dur_DECELERATE": 3.2,
+      "median_dur_ACCELERATE": 3.5,
+      "median_dur_STOP": 3.9,
+      "relation_edges": 1791.0,
+      "ACCEL_WHILE_DECEL_edges(불가능)": 15.0
+    },
+    "v0.4_no_jitter_filter": {
+      "moving_tracks": 3172.0,
+      "tracks_with_events": 2264.0,
+      "events": 3933.0,
+      "clipped_event_rate": 0.361,
+      "consecutive_same_type_pairs": 379.0,
+      "same_type_gap_le_1s": 39.0,
+      "events_TURN": 305.0,
+      "events_DECELERATE": 1334.0,
+      "events_ACCELERATE": 1379.0,
+      "events_STOP": 915.0,
+      "median_dur_TURN": 4.7,
+      "median_dur_DECELERATE": 3.1,
+      "median_dur_ACCELERATE": 3.3,
+      "median_dur_STOP": 3.9,
+      "relation_edges": 1884.0,
+      "ACCEL_WHILE_DECEL_edges(불가능)": 0.0
+    },
+    "v0.4": {
+      "moving_tracks": 3172.0,
+      "tracks_with_events": 2221.0,
+      "events": 3687.0,
+      "clipped_event_rate": 0.381,
+      "consecutive_same_type_pairs": 272.0,
+      "same_type_gap_le_1s": 19.0,
+      "events_TURN": 305.0,
+      "events_DECELERATE": 1211.0,
+      "events_ACCELERATE": 1256.0,
+      "events_STOP": 915.0,
+      "median_dur_TURN": 4.7,
+      "median_dur_DECELERATE": 3.3,
+      "median_dur_ACCELERATE": 3.55,
+      "median_dur_STOP": 3.9,
+      "relation_edges": 1514.0,
+      "ACCEL_WHILE_DECEL_edges(불가능)": 0.0
+    }
+  },
+  "detector_precision": "VERDICTS 미입력",
+  "graph": {
+    "track_nodes": 3172,
+    "event_nodes": 3687,
+    "has_event_edges": 3687,
+    "relation_edges": 1514,
+    "relation_edges_by_type": {
+      "THEN": 1294,
+      "WHILE": 220
+    },
+    "relation_edges_by_pattern": {
+      "ACCELERATE THEN ACCELERATE": 71,
+      "ACCELERATE THEN DECELERATE": 215,
+      "ACCELERATE THEN STOP": 10,
+      "ACCELERATE THEN TURN": 29,
+      "DECELERATE THEN ACCELERATE": 142,
+      "DECELERATE THEN DECELERATE": 71,
+      "DECELERATE THEN STOP": 288,
+      "DECELERATE THEN TURN": 21,
+      "STOP THEN ACCELERATE": 280,
+      "STOP THEN DECELERATE": 10,
+      "STOP THEN STOP": 74,
+      "STOP THEN TURN": 38,
+      "TURN THEN ACCELERATE": 7,
+      "TURN THEN DECELERATE": 33,
+      "TURN THEN STOP": 4,
+      "TURN THEN TURN": 1,
+      "ACCELERATE WHILE TURN": 87,
+      "DECELERATE WHILE TURN": 23,
+      "TURN WHILE ACCELERATE": 87,
+      "TURN WHILE DECELERATE": 23
+    },
+    "ordered_event_pairs_evaluated": 3696,
+    "pairs_with_clipped_boundary": 2134,
+    "note": "WHILE is symmetric, so each WHILE relation is stored as two directed edges."
+  },
+  "graph_query_execution": {
+    "version": "0.3.0",
+    "relation_config": {
+      "then_max_gap_s": 5.0,
+      "then_overlap_tolerance_s": 0.5,
+      "while_min_overlap_s": 0.5,
+      "while_min_ratio": 0.8,
+      "clip_grid_step_s": 0.1,
+      "clip_grid_max_points": 300000
+    },
+    "graph": {
+      "track_nodes": 3172,
+      "event_nodes": 3687,
+      "has_event_edges": 3687,
+      "relation_edges": 1514,
+      "relation_edges_by_type": {
+        "THEN": 1294,
+        "WHILE": 220
+      },
+      "relation_edges_by_pattern": {
+        "ACCELERATE THEN ACCELERATE": 71,
+        "ACCELERATE THEN DECELERATE": 215,
+        "ACCELERATE THEN STOP": 10,
+        "ACCELERATE THEN TURN": 29,
+        "DECELERATE THEN ACCELERATE": 142,
+        "DECELERATE THEN DECELERATE": 71,
+        "DECELERATE THEN STOP": 288,
+        "DECELERATE THEN TURN": 21,
+        "STOP THEN ACCELERATE": 280,
+        "STOP THEN DECELERATE": 10,
+        "STOP THEN STOP": 74,
+        "STOP THEN TURN": 38,
+        "TURN THEN ACCELERATE": 7,
+        "TURN THEN DECELERATE": 33,
+        "TURN THEN STOP": 4,
+        "TURN THEN TURN": 1,
+        "ACCELERATE WHILE TURN": 87,
+        "DECELERATE WHILE TURN": 23,
+        "TURN WHILE ACCELERATE": 87,
+        "TURN WHILE DECELERATE": 23
+      },
+      "ordered_event_pairs_evaluated": 3696,
+      "pairs_with_clipped_boundary": 2134,
+      "note": "WHILE is symmetric, so each WHILE relation is stored as two directed edges."
+    },
+    "graph_build_ms_median": 500.843,
+    "interval_prep_ms_median": 6.399,
+    "graph_retained_memory_kib": 784.2,
+    "graph_build_peak_memory_kib": 3659.0,
+    "retrieval_latency_interval_ms_mean": 31.24117,
+    "retrieval_latency_graph_ms_mean": 0.10821,
+    "break_even_query_count": 17,
+    "latency_repeat_max": 30,
+    "latency_time_budget_s_per_query": 0.5,
+    "query_count": 32,
+    "all_status_equal": true,
+    "all_retrieval_equal": true
+  },
+  "llm_generation": [
+    {
+      "variant": "zero_shot",
+      "method": "P (TQP)",
+      "seconds": 44.4
+    },
+    {
+      "variant": "zero_shot",
+      "method": "B2 (Python)",
+      "seconds": 303.7
+    },
+    {
+      "variant": "balanced",
+      "method": "P (TQP)",
+      "seconds": 54.9
+    },
+    {
+      "variant": "balanced",
+      "method": "B2 (Python)",
+      "seconds": 165.8
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "P (TQP)",
+      "seconds": 61.9
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "B2 (Python)",
+      "seconds": 204.0
+    }
+  ],
+  "llm_overall": [
+    {
+      "variant": "balanced",
+      "method": "B2 (Python)",
+      "n": 288,
+      "valid": 1.0,
+      "relation_acc": 0.875,
+      "direction_acc(THEN)": 0.892,
+      "exact_acc": 0.854,
+      "exact_95CI": "[0.81, 0.89]",
+      "probe_exact": 0.854,
+      "exact_lenient": 0.854
+    },
+    {
+      "variant": "balanced",
+      "method": "P (TQP)",
+      "n": 288,
+      "valid": 1.0,
+      "relation_acc": 0.993,
+      "direction_acc(THEN)": 0.904,
+      "exact_acc": 0.913,
+      "exact_95CI": "[0.88, 0.94]",
+      "probe_exact": 0.913,
+      "exact_lenient": 0.913
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "B2 (Python)",
+      "n": 288,
+      "valid": 1.0,
+      "relation_acc": 0.802,
+      "direction_acc(THEN)": 0.871,
+      "exact_acc": 0.726,
+      "exact_95CI": "[0.67, 0.77]",
+      "probe_exact": 0.726,
+      "exact_lenient": 0.726
+    },
+    {
+      "variant": "counterbalanced",
+      "method": "P (TQP)",
+      "n": 288,
+      "valid": 0.997,
+      "relation_acc": 0.938,
+      "direction_acc(THEN)": 0.617,
+      "exact_acc": 0.681,
+      "exact_95CI": "[0.62, 0.73]",
+      "probe_exact": 0.681,
+      "exact_lenient": 0.681
+    },
+    {
+      "variant": "zero_shot",
+      "method": "B2 (Python)",
+      "n": 288,
+      "valid": 0.656,
+      "relation_acc": 0.122,
+      "direction_acc(THEN)": 0.071,
+      "exact_acc": 0.069,
+      "exact_95CI": "[0.04, 0.10]",
+      "probe_exact": 0.017,
+      "exact_lenient": 0.069
+    },
+    {
+      "variant": "zero_shot",
+      "method": "P (TQP)",
+      "n": 288,
+      "valid": 0.219,
+      "relation_acc": 0.194,
+      "direction_acc(THEN)": 0.158,
+      "exact_acc": 0.177,
+      "exact_95CI": "[0.14, 0.23]",
+      "probe_exact": 0.177,
+      "exact_lenient": 0.597
+    }
+  ],
+  "mcnemar": [
+    {
+      "variant": "zero_shot",
+      "P": 0.177,
+      "B2": 0.069,
+      "P_only_correct": 48,
+      "B2_only_correct": 17,
+      "p_value": 0.0002,
+      "p_holm": 0.0006
+    },
+    {
+      "variant": "balanced",
+      "P": 0.913,
+      "B2": 0.854,
+      "P_only_correct": 33,
+      "B2_only_correct": 16,
+      "p_value": 0.0213,
+      "p_holm": 0.0426
+    },
+    {
+      "variant": "counterbalanced",
+      "P": 0.681,
+      "B2": 0.726,
+      "P_only_correct": 57,
+      "B2_only_correct": 70,
+      "p_value": 0.2869,
+      "p_holm": 0.2869
+    }
+  ],
+  "end_to_end": {
+    "balanced": 0.913,
+    "counterbalanced": 0.681,
+    "zero_shot": 0.177
+  }
+}

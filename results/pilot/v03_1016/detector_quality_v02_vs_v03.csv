@@ -1,0 +1,15 @@
+,v0.3,v0.2
+moving_tracks,3172.0,3531.0
+tracks_with_events,2262.0,1958.0
+events,3892.0,3269.0
+clipped_event_rate,0.377,0.251
+consecutive_same_type_pairs,320.0,368.0
+same_type_gap_le_1s,0.0,87.0
+events_TURN,337.0,335.0
+events_DECELERATE,1307.0,1005.0
+events_ACCELERATE,1333.0,986.0
+events_STOP,915.0,943.0
+median_dur_TURN,4.8,4.7
+median_dur_DECELERATE,3.2,2.0
+median_dur_ACCELERATE,3.5,2.1
+median_dur_STOP,3.9,3.7

@@ -1,0 +1,6 @@
+계층,결과
+Temporal Relation Grounding,"v1_original: P 0.708 [0.59, 0.80] / B2 0.667 [0.55, 0.77] | zero_shot: P 0.306 [0.21, 0.42] / B2 0.139 [0.08, 0.24] | balanced: P 0.889 [0.80, 0.94] / B2 0.792 [0.68, 0.87]"
+Temporal Query Plan,"v1_original: 유효 1.0, zero_shot: 유효 0.375, balanced: 유효 1.0"
+Temporal Event Graph,"트랙 3172, 사건 3892, 엣지 1791; 같은 유형 1초 이내 연속: v0.3 0 / v0.2 87"
+Graph Query Execution,"일치 True, Interval 37.01381 ms / Graph 0.12693 ms, 구축 593.569 ms, 손익분기 17회"
+End-to-end,"v1_original: 0.708, zero_shot: 0.306, balanced: 0.889"

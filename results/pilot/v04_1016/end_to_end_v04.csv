@@ -1,0 +1,865 @@
+variant,sentence,condition,gold_tracks,pred_tracks,same_track_set,jaccard
+zero_shot,A vehicle turns before slowing down.,congruent,33,33,True,1.0
+zero_shot,A vehicle turns before reducing its speed.,congruent,33,0,False,0.0
+zero_shot,A vehicle takes a turn before slowing down.,congruent,33,0,False,0.0
+zero_shot,A vehicle takes a turn before reducing its speed.,congruent,33,0,False,0.0
+zero_shot,A vehicle turns before speeding up.,congruent,7,7,True,1.0
+zero_shot,A vehicle turns before accelerating.,congruent,7,7,True,1.0
+zero_shot,A vehicle takes a turn before speeding up.,congruent,7,0,False,0.0
+zero_shot,A vehicle takes a turn before accelerating.,congruent,7,0,False,0.0
+zero_shot,A vehicle turns before stopping.,congruent,4,0,False,0.0
+zero_shot,A vehicle turns before coming to a stop.,congruent,4,0,False,0.0
+zero_shot,A vehicle takes a turn before stopping.,congruent,4,0,False,0.0
+zero_shot,A vehicle takes a turn before coming to a stop.,congruent,4,0,False,0.0
+zero_shot,A vehicle slows down before turning.,congruent,21,0,False,0.0
+zero_shot,A vehicle slows down before taking a turn.,congruent,21,0,False,0.0
+zero_shot,A vehicle reduces its speed before turning.,congruent,21,0,False,0.0
+zero_shot,A vehicle reduces its speed before taking a turn.,congruent,21,0,False,0.0
+zero_shot,A vehicle slows down before speeding up.,congruent,140,0,False,0.0
+zero_shot,A vehicle slows down before accelerating.,congruent,140,0,False,0.0
+zero_shot,A vehicle reduces its speed before speeding up.,congruent,140,0,False,0.0
+zero_shot,A vehicle reduces its speed before accelerating.,congruent,140,0,False,0.0
+zero_shot,A vehicle slows down before stopping.,congruent,266,0,False,0.0
+zero_shot,A vehicle slows down before coming to a stop.,congruent,266,0,False,0.0
+zero_shot,A vehicle reduces its speed before stopping.,congruent,266,0,False,0.0
+zero_shot,A vehicle reduces its speed before coming to a stop.,congruent,266,0,False,0.0
+zero_shot,A vehicle speeds up before turning.,congruent,29,29,True,1.0
+zero_shot,A vehicle speeds up before taking a turn.,congruent,29,29,True,1.0
+zero_shot,A vehicle accelerates before turning.,congruent,29,0,False,0.0
+zero_shot,A vehicle accelerates before taking a turn.,congruent,29,29,True,1.0
+zero_shot,A vehicle speeds up before slowing down.,congruent,207,207,True,1.0
+zero_shot,A vehicle speeds up before reducing its speed.,congruent,207,0,False,0.0
+zero_shot,A vehicle accelerates before slowing down.,congruent,207,0,False,0.0
+zero_shot,A vehicle accelerates before reducing its speed.,congruent,207,0,False,0.0
+zero_shot,A vehicle speeds up before stopping.,congruent,10,10,True,1.0
+zero_shot,A vehicle speeds up before coming to a stop.,congruent,10,10,True,1.0
+zero_shot,A vehicle accelerates before stopping.,congruent,10,0,False,0.0
+zero_shot,A vehicle accelerates before coming to a stop.,congruent,10,0,False,0.0
+zero_shot,A vehicle stops before turning.,congruent,38,0,False,0.0
+zero_shot,A vehicle stops before taking a turn.,congruent,38,0,False,0.0
+zero_shot,A vehicle comes to a stop before turning.,congruent,38,0,False,0.0
+zero_shot,A vehicle comes to a stop before taking a turn.,congruent,38,0,False,0.0
+zero_shot,A vehicle stops before slowing down.,congruent,10,0,False,0.0
+zero_shot,A vehicle stops before reducing its speed.,congruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop before slowing down.,congruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop before reducing its speed.,congruent,10,0,False,0.0
+zero_shot,A vehicle stops before speeding up.,congruent,266,0,False,0.0
+zero_shot,A vehicle stops before accelerating.,congruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop before speeding up.,congruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop before accelerating.,congruent,266,0,False,0.0
+zero_shot,A vehicle turns after slowing down.,incongruent,21,0,False,0.0
+zero_shot,A vehicle turns after reducing its speed.,incongruent,21,0,False,0.0
+zero_shot,A vehicle takes a turn after slowing down.,incongruent,21,0,False,0.0
+zero_shot,A vehicle takes a turn after reducing its speed.,incongruent,21,0,False,0.0
+zero_shot,A vehicle turns after speeding up.,incongruent,29,29,True,1.0
+zero_shot,A vehicle turns after accelerating.,incongruent,29,0,False,0.0
+zero_shot,A vehicle takes a turn after speeding up.,incongruent,29,29,True,1.0
+zero_shot,A vehicle takes a turn after accelerating.,incongruent,29,0,False,0.0
+zero_shot,A vehicle turns after stopping.,incongruent,38,0,False,0.0
+zero_shot,A vehicle turns after coming to a stop.,incongruent,38,0,False,0.0
+zero_shot,A vehicle takes a turn after stopping.,incongruent,38,0,False,0.0
+zero_shot,A vehicle takes a turn after coming to a stop.,incongruent,38,0,False,0.0
+zero_shot,A vehicle slows down after turning.,incongruent,33,21,False,0.0
+zero_shot,A vehicle slows down after taking a turn.,incongruent,33,0,False,0.0
+zero_shot,A vehicle reduces its speed after turning.,incongruent,33,0,False,0.0
+zero_shot,A vehicle reduces its speed after taking a turn.,incongruent,33,0,False,0.0
+zero_shot,A vehicle slows down after speeding up.,incongruent,207,0,False,0.0
+zero_shot,A vehicle slows down after accelerating.,incongruent,207,0,False,0.0
+zero_shot,A vehicle reduces its speed after speeding up.,incongruent,207,0,False,0.0
+zero_shot,A vehicle reduces its speed after accelerating.,incongruent,207,0,False,0.0
+zero_shot,A vehicle slows down after stopping.,incongruent,10,0,False,0.0
+zero_shot,A vehicle slows down after coming to a stop.,incongruent,10,0,False,0.0
+zero_shot,A vehicle reduces its speed after stopping.,incongruent,10,0,False,0.0
+zero_shot,A vehicle reduces its speed after coming to a stop.,incongruent,10,0,False,0.0
+zero_shot,A vehicle speeds up after turning.,incongruent,7,29,False,0.0
+zero_shot,A vehicle speeds up after taking a turn.,incongruent,7,29,False,0.0
+zero_shot,A vehicle accelerates after turning.,incongruent,7,29,False,0.0
+zero_shot,A vehicle accelerates after taking a turn.,incongruent,7,29,False,0.0
+zero_shot,A vehicle speeds up after slowing down.,incongruent,140,0,False,0.0
+zero_shot,A vehicle speeds up after reducing its speed.,incongruent,140,0,False,0.0
+zero_shot,A vehicle accelerates after slowing down.,incongruent,140,0,False,0.0
+zero_shot,A vehicle accelerates after reducing its speed.,incongruent,140,0,False,0.0
+zero_shot,A vehicle speeds up after stopping.,incongruent,266,0,False,0.0
+zero_shot,A vehicle speeds up after coming to a stop.,incongruent,266,0,False,0.0
+zero_shot,A vehicle accelerates after stopping.,incongruent,266,0,False,0.0
+zero_shot,A vehicle accelerates after coming to a stop.,incongruent,266,0,False,0.0
+zero_shot,A vehicle stops after turning.,incongruent,4,0,False,0.0
+zero_shot,A vehicle stops after taking a turn.,incongruent,4,0,False,0.0
+zero_shot,A vehicle comes to a stop after turning.,incongruent,4,0,False,0.0
+zero_shot,A vehicle comes to a stop after taking a turn.,incongruent,4,0,False,0.0
+zero_shot,A vehicle stops after slowing down.,incongruent,266,0,False,0.0
+zero_shot,A vehicle stops after reducing its speed.,incongruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop after slowing down.,incongruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop after reducing its speed.,incongruent,266,0,False,0.0
+zero_shot,A vehicle stops after speeding up.,incongruent,10,0,False,0.0
+zero_shot,A vehicle stops after accelerating.,incongruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop after speeding up.,incongruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop after accelerating.,incongruent,10,0,False,0.0
+zero_shot,"Before turning, a vehicle slows down.",incongruent,21,0,False,0.0
+zero_shot,"Before turning, a vehicle reduces its speed.",incongruent,21,0,False,0.0
+zero_shot,"Before taking a turn, a vehicle slows down.",incongruent,21,0,False,0.0
+zero_shot,"Before taking a turn, a vehicle reduces its speed.",incongruent,21,0,False,0.0
+zero_shot,"Before turning, a vehicle speeds up.",incongruent,29,29,True,1.0
+zero_shot,"Before turning, a vehicle accelerates.",incongruent,29,0,False,0.0
+zero_shot,"Before taking a turn, a vehicle speeds up.",incongruent,29,29,True,1.0
+zero_shot,"Before taking a turn, a vehicle accelerates.",incongruent,29,29,True,1.0
+zero_shot,"Before turning, a vehicle stops.",incongruent,38,0,False,0.0
+zero_shot,"Before turning, a vehicle comes to a stop.",incongruent,38,0,False,0.0
+zero_shot,"Before taking a turn, a vehicle stops.",incongruent,38,0,False,0.0
+zero_shot,"Before taking a turn, a vehicle comes to a stop.",incongruent,38,0,False,0.0
+zero_shot,"Before slowing down, a vehicle turns.",incongruent,33,0,False,0.0
+zero_shot,"Before slowing down, a vehicle takes a turn.",incongruent,33,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle turns.",incongruent,33,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle takes a turn.",incongruent,33,0,False,0.0
+zero_shot,"Before slowing down, a vehicle speeds up.",incongruent,207,207,True,1.0
+zero_shot,"Before slowing down, a vehicle accelerates.",incongruent,207,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle speeds up.",incongruent,207,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle accelerates.",incongruent,207,0,False,0.0
+zero_shot,"Before slowing down, a vehicle stops.",incongruent,10,0,False,0.0
+zero_shot,"Before slowing down, a vehicle comes to a stop.",incongruent,10,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle stops.",incongruent,10,0,False,0.0
+zero_shot,"Before reducing its speed, a vehicle comes to a stop.",incongruent,10,0,False,0.0
+zero_shot,"Before speeding up, a vehicle turns.",incongruent,7,0,False,0.0
+zero_shot,"Before speeding up, a vehicle takes a turn.",incongruent,7,0,False,0.0
+zero_shot,"Before accelerating, a vehicle turns.",incongruent,7,0,False,0.0
+zero_shot,"Before accelerating, a vehicle takes a turn.",incongruent,7,0,False,0.0
+zero_shot,"Before speeding up, a vehicle slows down.",incongruent,140,0,False,0.0
+zero_shot,"Before speeding up, a vehicle reduces its speed.",incongruent,140,0,False,0.0
+zero_shot,"Before accelerating, a vehicle slows down.",incongruent,140,0,False,0.0
+zero_shot,"Before accelerating, a vehicle reduces its speed.",incongruent,140,0,False,0.0
+zero_shot,"Before speeding up, a vehicle stops.",incongruent,266,0,False,0.0
+zero_shot,"Before speeding up, a vehicle comes to a stop.",incongruent,266,0,False,0.0
+zero_shot,"Before accelerating, a vehicle stops.",incongruent,266,0,False,0.0
+zero_shot,"Before accelerating, a vehicle comes to a stop.",incongruent,266,0,False,0.0
+zero_shot,"Before stopping, a vehicle turns.",incongruent,4,0,False,0.0
+zero_shot,"Before stopping, a vehicle takes a turn.",incongruent,4,0,False,0.0
+zero_shot,"Before coming to a stop, a vehicle turns.",incongruent,4,0,False,0.0
+zero_shot,"Before coming to a stop, a vehicle takes a turn.",incongruent,4,0,False,0.0
+zero_shot,"Before stopping, a vehicle slows down.",incongruent,266,0,False,0.0
+zero_shot,"Before stopping, a vehicle reduces its speed.",incongruent,266,0,False,0.0
+zero_shot,"Before coming to a stop, a vehicle slows down.",incongruent,266,0,False,0.0
+zero_shot,"Before coming to a stop, a vehicle reduces its speed.",incongruent,266,0,False,0.0
+zero_shot,"Before stopping, a vehicle speeds up.",incongruent,10,0,False,0.0
+zero_shot,"Before stopping, a vehicle accelerates.",incongruent,10,0,False,0.0
+zero_shot,"Before coming to a stop, a vehicle speeds up.",incongruent,10,10,True,1.0
+zero_shot,"Before coming to a stop, a vehicle accelerates.",incongruent,10,0,False,0.0
+zero_shot,"After turning, a vehicle slows down.",congruent,33,0,False,0.0
+zero_shot,"After turning, a vehicle reduces its speed.",congruent,33,0,False,0.0
+zero_shot,"After taking a turn, a vehicle slows down.",congruent,33,0,False,0.0
+zero_shot,"After taking a turn, a vehicle reduces its speed.",congruent,33,0,False,0.0
+zero_shot,"After turning, a vehicle speeds up.",congruent,7,0,False,0.0
+zero_shot,"After turning, a vehicle accelerates.",congruent,7,7,True,1.0
+zero_shot,"After taking a turn, a vehicle speeds up.",congruent,7,0,False,0.0
+zero_shot,"After taking a turn, a vehicle accelerates.",congruent,7,7,True,1.0
+zero_shot,"After turning, a vehicle stops.",congruent,4,0,False,0.0
+zero_shot,"After turning, a vehicle comes to a stop.",congruent,4,0,False,0.0
+zero_shot,"After taking a turn, a vehicle stops.",congruent,4,0,False,0.0
+zero_shot,"After taking a turn, a vehicle comes to a stop.",congruent,4,0,False,0.0
+zero_shot,"After slowing down, a vehicle turns.",congruent,21,0,False,0.0
+zero_shot,"After slowing down, a vehicle takes a turn.",congruent,21,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle turns.",congruent,21,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle takes a turn.",congruent,21,0,False,0.0
+zero_shot,"After slowing down, a vehicle speeds up.",congruent,140,0,False,0.0
+zero_shot,"After slowing down, a vehicle accelerates.",congruent,140,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle speeds up.",congruent,140,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle accelerates.",congruent,140,0,False,0.0
+zero_shot,"After slowing down, a vehicle stops.",congruent,266,0,False,0.0
+zero_shot,"After slowing down, a vehicle comes to a stop.",congruent,266,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle stops.",congruent,266,0,False,0.0
+zero_shot,"After reducing its speed, a vehicle comes to a stop.",congruent,266,0,False,0.0
+zero_shot,"After speeding up, a vehicle turns.",congruent,29,29,True,1.0
+zero_shot,"After speeding up, a vehicle takes a turn.",congruent,29,0,False,0.0
+zero_shot,"After accelerating, a vehicle turns.",congruent,29,0,False,0.0
+zero_shot,"After accelerating, a vehicle takes a turn.",congruent,29,0,False,0.0
+zero_shot,"After speeding up, a vehicle slows down.",congruent,207,207,True,1.0
+zero_shot,"After speeding up, a vehicle reduces its speed.",congruent,207,0,False,0.0
+zero_shot,"After accelerating, a vehicle slows down.",congruent,207,0,False,0.0
+zero_shot,"After accelerating, a vehicle reduces its speed.",congruent,207,0,False,0.0
+zero_shot,"After speeding up, a vehicle stops.",congruent,10,0,False,0.0
+zero_shot,"After speeding up, a vehicle comes to a stop.",congruent,10,0,False,0.0
+zero_shot,"After accelerating, a vehicle stops.",congruent,10,0,False,0.0
+zero_shot,"After accelerating, a vehicle comes to a stop.",congruent,10,0,False,0.0
+zero_shot,"After stopping, a vehicle turns.",congruent,38,0,False,0.0
+zero_shot,"After stopping, a vehicle takes a turn.",congruent,38,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle turns.",congruent,38,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle takes a turn.",congruent,38,0,False,0.0
+zero_shot,"After stopping, a vehicle slows down.",congruent,10,0,False,0.0
+zero_shot,"After stopping, a vehicle reduces its speed.",congruent,10,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle slows down.",congruent,10,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle reduces its speed.",congruent,10,0,False,0.0
+zero_shot,"After stopping, a vehicle speeds up.",congruent,266,0,False,0.0
+zero_shot,"After stopping, a vehicle accelerates.",congruent,266,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle speeds up.",congruent,266,0,False,0.0
+zero_shot,"After coming to a stop, a vehicle accelerates.",congruent,266,0,False,0.0
+zero_shot,A vehicle turns and then slows down.,congruent,33,33,True,1.0
+zero_shot,A vehicle turns and then reduces its speed.,congruent,33,33,True,1.0
+zero_shot,A vehicle takes a turn and then slows down.,congruent,33,0,False,0.0
+zero_shot,A vehicle takes a turn and then reduces its speed.,congruent,33,0,False,0.0
+zero_shot,A vehicle turns and then speeds up.,congruent,7,7,True,1.0
+zero_shot,A vehicle turns and then accelerates.,congruent,7,7,True,1.0
+zero_shot,A vehicle takes a turn and then speeds up.,congruent,7,0,False,0.0
+zero_shot,A vehicle takes a turn and then accelerates.,congruent,7,0,False,0.0
+zero_shot,A vehicle turns and then stops.,congruent,4,4,True,1.0
+zero_shot,A vehicle turns and then comes to a stop.,congruent,4,0,False,0.0
+zero_shot,A vehicle takes a turn and then stops.,congruent,4,0,False,0.0
+zero_shot,A vehicle takes a turn and then comes to a stop.,congruent,4,0,False,0.0
+zero_shot,A vehicle slows down and then turns.,congruent,21,0,False,0.0
+zero_shot,A vehicle slows down and then takes a turn.,congruent,21,0,False,0.0
+zero_shot,A vehicle reduces its speed and then turns.,congruent,21,0,False,0.0
+zero_shot,A vehicle reduces its speed and then takes a turn.,congruent,21,0,False,0.0
+zero_shot,A vehicle slows down and then speeds up.,congruent,140,140,True,1.0
+zero_shot,A vehicle slows down and then accelerates.,congruent,140,140,True,1.0
+zero_shot,A vehicle reduces its speed and then speeds up.,congruent,140,0,False,0.0
+zero_shot,A vehicle reduces its speed and then accelerates.,congruent,140,0,False,0.0
+zero_shot,A vehicle slows down and then stops.,congruent,266,266,True,1.0
+zero_shot,A vehicle slows down and then comes to a stop.,congruent,266,0,False,0.0
+zero_shot,A vehicle reduces its speed and then stops.,congruent,266,0,False,0.0
+zero_shot,A vehicle reduces its speed and then comes to a stop.,congruent,266,0,False,0.0
+zero_shot,A vehicle speeds up and then turns.,congruent,29,29,True,1.0
+zero_shot,A vehicle speeds up and then takes a turn.,congruent,29,29,True,1.0
+zero_shot,A vehicle accelerates and then turns.,congruent,29,29,True,1.0
+zero_shot,A vehicle accelerates and then takes a turn.,congruent,29,29,True,1.0
+zero_shot,A vehicle speeds up and then slows down.,congruent,207,207,True,1.0
+zero_shot,A vehicle speeds up and then reduces its speed.,congruent,207,0,False,0.0
+zero_shot,A vehicle accelerates and then slows down.,congruent,207,207,True,1.0
+zero_shot,A vehicle accelerates and then reduces its speed.,congruent,207,0,False,0.0
+zero_shot,A vehicle speeds up and then stops.,congruent,10,10,True,1.0
+zero_shot,A vehicle speeds up and then comes to a stop.,congruent,10,10,True,1.0
+zero_shot,A vehicle accelerates and then stops.,congruent,10,10,True,1.0
+zero_shot,A vehicle accelerates and then comes to a stop.,congruent,10,10,True,1.0
+zero_shot,A vehicle stops and then turns.,congruent,38,0,False,0.0
+zero_shot,A vehicle stops and then takes a turn.,congruent,38,0,False,0.0
+zero_shot,A vehicle comes to a stop and then turns.,congruent,38,0,False,0.0
+zero_shot,A vehicle comes to a stop and then takes a turn.,congruent,38,0,False,0.0
+zero_shot,A vehicle stops and then slows down.,congruent,10,0,False,0.0
+zero_shot,A vehicle stops and then reduces its speed.,congruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop and then slows down.,congruent,10,0,False,0.0
+zero_shot,A vehicle comes to a stop and then reduces its speed.,congruent,10,0,False,0.0
+zero_shot,A vehicle stops and then speeds up.,congruent,266,0,False,0.0
+zero_shot,A vehicle stops and then accelerates.,congruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop and then speeds up.,congruent,266,0,False,0.0
+zero_shot,A vehicle comes to a stop and then accelerates.,congruent,266,0,False,0.0
+zero_shot,A vehicle slows down while turning.,simultaneous,23,23,True,1.0
+zero_shot,A vehicle slows down while taking a turn.,simultaneous,23,23,True,1.0
+zero_shot,A vehicle reduces its speed while turning.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle reduces its speed while taking a turn.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle turns while slowing down.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle turns while reducing its speed.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle takes a turn while slowing down.,simultaneous,23,33,False,0.01818181818181818
+zero_shot,A vehicle takes a turn while reducing its speed.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle speeds up while turning.,simultaneous,87,87,True,1.0
+zero_shot,A vehicle speeds up while taking a turn.,simultaneous,87,87,True,1.0
+zero_shot,A vehicle accelerates while turning.,simultaneous,87,0,False,0.0
+zero_shot,A vehicle accelerates while taking a turn.,simultaneous,87,87,True,1.0
+zero_shot,A vehicle turns while speeding up.,simultaneous,87,87,True,1.0
+zero_shot,A vehicle turns while accelerating.,simultaneous,87,87,True,1.0
+zero_shot,A vehicle takes a turn while speeding up.,simultaneous,87,0,False,0.0
+zero_shot,A vehicle takes a turn while accelerating.,simultaneous,87,87,True,1.0
+zero_shot,"While slowing down, a vehicle turns.",simultaneous,23,0,False,0.0
+zero_shot,"While slowing down, a vehicle takes a turn.",simultaneous,23,0,False,0.0
+zero_shot,"While reducing its speed, a vehicle turns.",simultaneous,23,0,False,0.0
+zero_shot,"While reducing its speed, a vehicle takes a turn.",simultaneous,23,0,False,0.0
+zero_shot,"While turning, a vehicle slows down.",simultaneous,23,23,True,1.0
+zero_shot,"While turning, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+zero_shot,"While taking a turn, a vehicle slows down.",simultaneous,23,0,False,0.0
+zero_shot,"While taking a turn, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+zero_shot,"While speeding up, a vehicle turns.",simultaneous,87,0,False,0.0
+zero_shot,"While speeding up, a vehicle takes a turn.",simultaneous,87,0,False,0.0
+zero_shot,"While accelerating, a vehicle turns.",simultaneous,87,0,False,0.0
+zero_shot,"While accelerating, a vehicle takes a turn.",simultaneous,87,0,False,0.0
+zero_shot,"While turning, a vehicle speeds up.",simultaneous,87,0,False,0.0
+zero_shot,"While turning, a vehicle accelerates.",simultaneous,87,87,True,1.0
+zero_shot,"While taking a turn, a vehicle speeds up.",simultaneous,87,87,True,1.0
+zero_shot,"While taking a turn, a vehicle accelerates.",simultaneous,87,0,False,0.0
+zero_shot,A vehicle slows down as it turns.,simultaneous,23,21,False,0.1
+zero_shot,A vehicle slows down as it takes a turn.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle reduces its speed as it turns.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle reduces its speed as it takes a turn.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle turns as it slows down.,simultaneous,23,33,False,0.01818181818181818
+zero_shot,A vehicle turns as it reduces its speed.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle takes a turn as it slows down.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle takes a turn as it reduces its speed.,simultaneous,23,0,False,0.0
+zero_shot,A vehicle speeds up as it turns.,simultaneous,87,29,False,0.008695652173913044
+zero_shot,A vehicle speeds up as it takes a turn.,simultaneous,87,29,False,0.008695652173913044
+zero_shot,A vehicle accelerates as it turns.,simultaneous,87,29,False,0.008695652173913044
+zero_shot,A vehicle accelerates as it takes a turn.,simultaneous,87,29,False,0.008695652173913044
+zero_shot,A vehicle turns as it speeds up.,simultaneous,87,0,False,0.0
+zero_shot,A vehicle turns as it accelerates.,simultaneous,87,0,False,0.0
+zero_shot,A vehicle takes a turn as it speeds up.,simultaneous,87,0,False,0.0
+zero_shot,A vehicle takes a turn as it accelerates.,simultaneous,87,0,False,0.0
+balanced,A vehicle turns before slowing down.,congruent,33,33,True,1.0
+balanced,A vehicle turns before reducing its speed.,congruent,33,33,True,1.0
+balanced,A vehicle takes a turn before slowing down.,congruent,33,33,True,1.0
+balanced,A vehicle takes a turn before reducing its speed.,congruent,33,33,True,1.0
+balanced,A vehicle turns before speeding up.,congruent,7,7,True,1.0
+balanced,A vehicle turns before accelerating.,congruent,7,7,True,1.0
+balanced,A vehicle takes a turn before speeding up.,congruent,7,7,True,1.0
+balanced,A vehicle takes a turn before accelerating.,congruent,7,7,True,1.0
+balanced,A vehicle turns before stopping.,congruent,4,4,True,1.0
+balanced,A vehicle turns before coming to a stop.,congruent,4,4,True,1.0
+balanced,A vehicle takes a turn before stopping.,congruent,4,4,True,1.0
+balanced,A vehicle takes a turn before coming to a stop.,congruent,4,4,True,1.0
+balanced,A vehicle slows down before turning.,congruent,21,21,True,1.0
+balanced,A vehicle slows down before taking a turn.,congruent,21,21,True,1.0
+balanced,A vehicle reduces its speed before turning.,congruent,21,21,True,1.0
+balanced,A vehicle reduces its speed before taking a turn.,congruent,21,21,True,1.0
+balanced,A vehicle slows down before speeding up.,congruent,140,140,True,1.0
+balanced,A vehicle slows down before accelerating.,congruent,140,140,True,1.0
+balanced,A vehicle reduces its speed before speeding up.,congruent,140,140,True,1.0
+balanced,A vehicle reduces its speed before accelerating.,congruent,140,140,True,1.0
+balanced,A vehicle slows down before stopping.,congruent,266,266,True,1.0
+balanced,A vehicle slows down before coming to a stop.,congruent,266,266,True,1.0
+balanced,A vehicle reduces its speed before stopping.,congruent,266,266,True,1.0
+balanced,A vehicle reduces its speed before coming to a stop.,congruent,266,266,True,1.0
+balanced,A vehicle speeds up before turning.,congruent,29,29,True,1.0
+balanced,A vehicle speeds up before taking a turn.,congruent,29,29,True,1.0
+balanced,A vehicle accelerates before turning.,congruent,29,29,True,1.0
+balanced,A vehicle accelerates before taking a turn.,congruent,29,29,True,1.0
+balanced,A vehicle speeds up before slowing down.,congruent,207,207,True,1.0
+balanced,A vehicle speeds up before reducing its speed.,congruent,207,207,True,1.0
+balanced,A vehicle accelerates before slowing down.,congruent,207,207,True,1.0
+balanced,A vehicle accelerates before reducing its speed.,congruent,207,207,True,1.0
+balanced,A vehicle speeds up before stopping.,congruent,10,10,True,1.0
+balanced,A vehicle speeds up before coming to a stop.,congruent,10,10,True,1.0
+balanced,A vehicle accelerates before stopping.,congruent,10,10,True,1.0
+balanced,A vehicle accelerates before coming to a stop.,congruent,10,10,True,1.0
+balanced,A vehicle stops before turning.,congruent,38,38,True,1.0
+balanced,A vehicle stops before taking a turn.,congruent,38,38,True,1.0
+balanced,A vehicle comes to a stop before turning.,congruent,38,38,True,1.0
+balanced,A vehicle comes to a stop before taking a turn.,congruent,38,38,True,1.0
+balanced,A vehicle stops before slowing down.,congruent,10,10,True,1.0
+balanced,A vehicle stops before reducing its speed.,congruent,10,10,True,1.0
+balanced,A vehicle comes to a stop before slowing down.,congruent,10,10,True,1.0
+balanced,A vehicle comes to a stop before reducing its speed.,congruent,10,10,True,1.0
+balanced,A vehicle stops before speeding up.,congruent,266,266,True,1.0
+balanced,A vehicle stops before accelerating.,congruent,266,266,True,1.0
+balanced,A vehicle comes to a stop before speeding up.,congruent,266,266,True,1.0
+balanced,A vehicle comes to a stop before accelerating.,congruent,266,266,True,1.0
+balanced,A vehicle turns after slowing down.,incongruent,21,21,True,1.0
+balanced,A vehicle turns after reducing its speed.,incongruent,21,21,True,1.0
+balanced,A vehicle takes a turn after slowing down.,incongruent,21,33,False,0.0
+balanced,A vehicle takes a turn after reducing its speed.,incongruent,21,21,True,1.0
+balanced,A vehicle turns after speeding up.,incongruent,29,7,False,0.0
+balanced,A vehicle turns after accelerating.,incongruent,29,29,True,1.0
+balanced,A vehicle takes a turn after speeding up.,incongruent,29,29,True,1.0
+balanced,A vehicle takes a turn after accelerating.,incongruent,29,29,True,1.0
+balanced,A vehicle turns after stopping.,incongruent,38,4,False,0.0
+balanced,A vehicle turns after coming to a stop.,incongruent,38,4,False,0.0
+balanced,A vehicle takes a turn after stopping.,incongruent,38,4,False,0.0
+balanced,A vehicle takes a turn after coming to a stop.,incongruent,38,38,True,1.0
+balanced,A vehicle slows down after turning.,incongruent,33,33,True,1.0
+balanced,A vehicle slows down after taking a turn.,incongruent,33,21,False,0.0
+balanced,A vehicle reduces its speed after turning.,incongruent,33,21,False,0.0
+balanced,A vehicle reduces its speed after taking a turn.,incongruent,33,21,False,0.0
+balanced,A vehicle slows down after speeding up.,incongruent,207,207,True,1.0
+balanced,A vehicle slows down after accelerating.,incongruent,207,207,True,1.0
+balanced,A vehicle reduces its speed after speeding up.,incongruent,207,207,True,1.0
+balanced,A vehicle reduces its speed after accelerating.,incongruent,207,207,True,1.0
+balanced,A vehicle slows down after stopping.,incongruent,10,10,True,1.0
+balanced,A vehicle slows down after coming to a stop.,incongruent,10,10,True,1.0
+balanced,A vehicle reduces its speed after stopping.,incongruent,10,10,True,1.0
+balanced,A vehicle reduces its speed after coming to a stop.,incongruent,10,10,True,1.0
+balanced,A vehicle speeds up after turning.,incongruent,7,29,False,0.0
+balanced,A vehicle speeds up after taking a turn.,incongruent,7,29,False,0.0
+balanced,A vehicle accelerates after turning.,incongruent,7,7,True,1.0
+balanced,A vehicle accelerates after taking a turn.,incongruent,7,29,False,0.0
+balanced,A vehicle speeds up after slowing down.,incongruent,140,140,True,1.0
+balanced,A vehicle speeds up after reducing its speed.,incongruent,140,140,True,1.0
+balanced,A vehicle accelerates after slowing down.,incongruent,140,140,True,1.0
+balanced,A vehicle accelerates after reducing its speed.,incongruent,140,140,True,1.0
+balanced,A vehicle speeds up after stopping.,incongruent,266,266,True,1.0
+balanced,A vehicle speeds up after coming to a stop.,incongruent,266,266,True,1.0
+balanced,A vehicle accelerates after stopping.,incongruent,266,266,True,1.0
+balanced,A vehicle accelerates after coming to a stop.,incongruent,266,266,True,1.0
+balanced,A vehicle stops after turning.,incongruent,4,38,False,0.0
+balanced,A vehicle stops after taking a turn.,incongruent,4,38,False,0.0
+balanced,A vehicle comes to a stop after turning.,incongruent,4,38,False,0.0
+balanced,A vehicle comes to a stop after taking a turn.,incongruent,4,38,False,0.0
+balanced,A vehicle stops after slowing down.,incongruent,266,10,False,0.022222222222222223
+balanced,A vehicle stops after reducing its speed.,incongruent,266,10,False,0.022222222222222223
+balanced,A vehicle comes to a stop after slowing down.,incongruent,266,10,False,0.022222222222222223
+balanced,A vehicle comes to a stop after reducing its speed.,incongruent,266,10,False,0.022222222222222223
+balanced,A vehicle stops after speeding up.,incongruent,10,10,True,1.0
+balanced,A vehicle stops after accelerating.,incongruent,10,10,True,1.0
+balanced,A vehicle comes to a stop after speeding up.,incongruent,10,10,True,1.0
+balanced,A vehicle comes to a stop after accelerating.,incongruent,10,10,True,1.0
+balanced,"Before turning, a vehicle slows down.",incongruent,21,21,True,1.0
+balanced,"Before turning, a vehicle reduces its speed.",incongruent,21,21,True,1.0
+balanced,"Before taking a turn, a vehicle slows down.",incongruent,21,21,True,1.0
+balanced,"Before taking a turn, a vehicle reduces its speed.",incongruent,21,21,True,1.0
+balanced,"Before turning, a vehicle speeds up.",incongruent,29,29,True,1.0
+balanced,"Before turning, a vehicle accelerates.",incongruent,29,29,True,1.0
+balanced,"Before taking a turn, a vehicle speeds up.",incongruent,29,29,True,1.0
+balanced,"Before taking a turn, a vehicle accelerates.",incongruent,29,29,True,1.0
+balanced,"Before turning, a vehicle stops.",incongruent,38,38,True,1.0
+balanced,"Before turning, a vehicle comes to a stop.",incongruent,38,38,True,1.0
+balanced,"Before taking a turn, a vehicle stops.",incongruent,38,38,True,1.0
+balanced,"Before taking a turn, a vehicle comes to a stop.",incongruent,38,38,True,1.0
+balanced,"Before slowing down, a vehicle turns.",incongruent,33,33,True,1.0
+balanced,"Before slowing down, a vehicle takes a turn.",incongruent,33,33,True,1.0
+balanced,"Before reducing its speed, a vehicle turns.",incongruent,33,33,True,1.0
+balanced,"Before reducing its speed, a vehicle takes a turn.",incongruent,33,33,True,1.0
+balanced,"Before slowing down, a vehicle speeds up.",incongruent,207,207,True,1.0
+balanced,"Before slowing down, a vehicle accelerates.",incongruent,207,207,True,1.0
+balanced,"Before reducing its speed, a vehicle speeds up.",incongruent,207,207,True,1.0
+balanced,"Before reducing its speed, a vehicle accelerates.",incongruent,207,207,True,1.0
+balanced,"Before slowing down, a vehicle stops.",incongruent,10,10,True,1.0
+balanced,"Before slowing down, a vehicle comes to a stop.",incongruent,10,10,True,1.0
+balanced,"Before reducing its speed, a vehicle stops.",incongruent,10,10,True,1.0
+balanced,"Before reducing its speed, a vehicle comes to a stop.",incongruent,10,10,True,1.0
+balanced,"Before speeding up, a vehicle turns.",incongruent,7,7,True,1.0
+balanced,"Before speeding up, a vehicle takes a turn.",incongruent,7,7,True,1.0
+balanced,"Before accelerating, a vehicle turns.",incongruent,7,7,True,1.0
+balanced,"Before accelerating, a vehicle takes a turn.",incongruent,7,7,True,1.0
+balanced,"Before speeding up, a vehicle slows down.",incongruent,140,140,True,1.0
+balanced,"Before speeding up, a vehicle reduces its speed.",incongruent,140,140,True,1.0
+balanced,"Before accelerating, a vehicle slows down.",incongruent,140,140,True,1.0
+balanced,"Before accelerating, a vehicle reduces its speed.",incongruent,140,140,True,1.0
+balanced,"Before speeding up, a vehicle stops.",incongruent,266,266,True,1.0
+balanced,"Before speeding up, a vehicle comes to a stop.",incongruent,266,266,True,1.0
+balanced,"Before accelerating, a vehicle stops.",incongruent,266,266,True,1.0
+balanced,"Before accelerating, a vehicle comes to a stop.",incongruent,266,266,True,1.0
+balanced,"Before stopping, a vehicle turns.",incongruent,4,4,True,1.0
+balanced,"Before stopping, a vehicle takes a turn.",incongruent,4,4,True,1.0
+balanced,"Before coming to a stop, a vehicle turns.",incongruent,4,4,True,1.0
+balanced,"Before coming to a stop, a vehicle takes a turn.",incongruent,4,4,True,1.0
+balanced,"Before stopping, a vehicle slows down.",incongruent,266,266,True,1.0
+balanced,"Before stopping, a vehicle reduces its speed.",incongruent,266,266,True,1.0
+balanced,"Before coming to a stop, a vehicle slows down.",incongruent,266,266,True,1.0
+balanced,"Before coming to a stop, a vehicle reduces its speed.",incongruent,266,266,True,1.0
+balanced,"Before stopping, a vehicle speeds up.",incongruent,10,10,True,1.0
+balanced,"Before stopping, a vehicle accelerates.",incongruent,10,10,True,1.0
+balanced,"Before coming to a stop, a vehicle speeds up.",incongruent,10,10,True,1.0
+balanced,"Before coming to a stop, a vehicle accelerates.",incongruent,10,10,True,1.0
+balanced,"After turning, a vehicle slows down.",congruent,33,33,True,1.0
+balanced,"After turning, a vehicle reduces its speed.",congruent,33,33,True,1.0
+balanced,"After taking a turn, a vehicle slows down.",congruent,33,33,True,1.0
+balanced,"After taking a turn, a vehicle reduces its speed.",congruent,33,33,True,1.0
+balanced,"After turning, a vehicle speeds up.",congruent,7,7,True,1.0
+balanced,"After turning, a vehicle accelerates.",congruent,7,7,True,1.0
+balanced,"After taking a turn, a vehicle speeds up.",congruent,7,7,True,1.0
+balanced,"After taking a turn, a vehicle accelerates.",congruent,7,7,True,1.0
+balanced,"After turning, a vehicle stops.",congruent,4,38,False,0.0
+balanced,"After turning, a vehicle comes to a stop.",congruent,4,4,True,1.0
+balanced,"After taking a turn, a vehicle stops.",congruent,4,38,False,0.0
+balanced,"After taking a turn, a vehicle comes to a stop.",congruent,4,4,True,1.0
+balanced,"After slowing down, a vehicle turns.",congruent,21,21,True,1.0
+balanced,"After slowing down, a vehicle takes a turn.",congruent,21,21,True,1.0
+balanced,"After reducing its speed, a vehicle turns.",congruent,21,21,True,1.0
+balanced,"After reducing its speed, a vehicle takes a turn.",congruent,21,21,True,1.0
+balanced,"After slowing down, a vehicle speeds up.",congruent,140,140,True,1.0
+balanced,"After slowing down, a vehicle accelerates.",congruent,140,140,True,1.0
+balanced,"After reducing its speed, a vehicle speeds up.",congruent,140,140,True,1.0
+balanced,"After reducing its speed, a vehicle accelerates.",congruent,140,140,True,1.0
+balanced,"After slowing down, a vehicle stops.",congruent,266,266,True,1.0
+balanced,"After slowing down, a vehicle comes to a stop.",congruent,266,266,True,1.0
+balanced,"After reducing its speed, a vehicle stops.",congruent,266,266,True,1.0
+balanced,"After reducing its speed, a vehicle comes to a stop.",congruent,266,266,True,1.0
+balanced,"After speeding up, a vehicle turns.",congruent,29,29,True,1.0
+balanced,"After speeding up, a vehicle takes a turn.",congruent,29,29,True,1.0
+balanced,"After accelerating, a vehicle turns.",congruent,29,29,True,1.0
+balanced,"After accelerating, a vehicle takes a turn.",congruent,29,29,True,1.0
+balanced,"After speeding up, a vehicle slows down.",congruent,207,207,True,1.0
+balanced,"After speeding up, a vehicle reduces its speed.",congruent,207,207,True,1.0
+balanced,"After accelerating, a vehicle slows down.",congruent,207,207,True,1.0
+balanced,"After accelerating, a vehicle reduces its speed.",congruent,207,207,True,1.0
+balanced,"After speeding up, a vehicle stops.",congruent,10,10,True,1.0
+balanced,"After speeding up, a vehicle comes to a stop.",congruent,10,10,True,1.0
+balanced,"After accelerating, a vehicle stops.",congruent,10,10,True,1.0
+balanced,"After accelerating, a vehicle comes to a stop.",congruent,10,10,True,1.0
+balanced,"After stopping, a vehicle turns.",congruent,38,4,False,0.0
+balanced,"After stopping, a vehicle takes a turn.",congruent,38,38,True,1.0
+balanced,"After coming to a stop, a vehicle turns.",congruent,38,38,True,1.0
+balanced,"After coming to a stop, a vehicle takes a turn.",congruent,38,38,True,1.0
+balanced,"After stopping, a vehicle slows down.",congruent,10,10,True,1.0
+balanced,"After stopping, a vehicle reduces its speed.",congruent,10,10,True,1.0
+balanced,"After coming to a stop, a vehicle slows down.",congruent,10,10,True,1.0
+balanced,"After coming to a stop, a vehicle reduces its speed.",congruent,10,10,True,1.0
+balanced,"After stopping, a vehicle speeds up.",congruent,266,266,True,1.0
+balanced,"After stopping, a vehicle accelerates.",congruent,266,266,True,1.0
+balanced,"After coming to a stop, a vehicle speeds up.",congruent,266,266,True,1.0
+balanced,"After coming to a stop, a vehicle accelerates.",congruent,266,266,True,1.0
+balanced,A vehicle turns and then slows down.,congruent,33,33,True,1.0
+balanced,A vehicle turns and then reduces its speed.,congruent,33,33,True,1.0
+balanced,A vehicle takes a turn and then slows down.,congruent,33,33,True,1.0
+balanced,A vehicle takes a turn and then reduces its speed.,congruent,33,33,True,1.0
+balanced,A vehicle turns and then speeds up.,congruent,7,7,True,1.0
+balanced,A vehicle turns and then accelerates.,congruent,7,7,True,1.0
+balanced,A vehicle takes a turn and then speeds up.,congruent,7,7,True,1.0
+balanced,A vehicle takes a turn and then accelerates.,congruent,7,7,True,1.0
+balanced,A vehicle turns and then stops.,congruent,4,4,True,1.0
+balanced,A vehicle turns and then comes to a stop.,congruent,4,4,True,1.0
+balanced,A vehicle takes a turn and then stops.,congruent,4,4,True,1.0
+balanced,A vehicle takes a turn and then comes to a stop.,congruent,4,4,True,1.0
+balanced,A vehicle slows down and then turns.,congruent,21,21,True,1.0
+balanced,A vehicle slows down and then takes a turn.,congruent,21,21,True,1.0
+balanced,A vehicle reduces its speed and then turns.,congruent,21,21,True,1.0
+balanced,A vehicle reduces its speed and then takes a turn.,congruent,21,21,True,1.0
+balanced,A vehicle slows down and then speeds up.,congruent,140,140,True,1.0
+balanced,A vehicle slows down and then accelerates.,congruent,140,140,True,1.0
+balanced,A vehicle reduces its speed and then speeds up.,congruent,140,140,True,1.0
+balanced,A vehicle reduces its speed and then accelerates.,congruent,140,140,True,1.0
+balanced,A vehicle slows down and then stops.,congruent,266,266,True,1.0
+balanced,A vehicle slows down and then comes to a stop.,congruent,266,266,True,1.0
+balanced,A vehicle reduces its speed and then stops.,congruent,266,266,True,1.0
+balanced,A vehicle reduces its speed and then comes to a stop.,congruent,266,266,True,1.0
+balanced,A vehicle speeds up and then turns.,congruent,29,29,True,1.0
+balanced,A vehicle speeds up and then takes a turn.,congruent,29,29,True,1.0
+balanced,A vehicle accelerates and then turns.,congruent,29,29,True,1.0
+balanced,A vehicle accelerates and then takes a turn.,congruent,29,29,True,1.0
+balanced,A vehicle speeds up and then slows down.,congruent,207,207,True,1.0
+balanced,A vehicle speeds up and then reduces its speed.,congruent,207,207,True,1.0
+balanced,A vehicle accelerates and then slows down.,congruent,207,207,True,1.0
+balanced,A vehicle accelerates and then reduces its speed.,congruent,207,207,True,1.0
+balanced,A vehicle speeds up and then stops.,congruent,10,10,True,1.0
+balanced,A vehicle speeds up and then comes to a stop.,congruent,10,10,True,1.0
+balanced,A vehicle accelerates and then stops.,congruent,10,10,True,1.0
+balanced,A vehicle accelerates and then comes to a stop.,congruent,10,10,True,1.0
+balanced,A vehicle stops and then turns.,congruent,38,38,True,1.0
+balanced,A vehicle stops and then takes a turn.,congruent,38,38,True,1.0
+balanced,A vehicle comes to a stop and then turns.,congruent,38,38,True,1.0
+balanced,A vehicle comes to a stop and then takes a turn.,congruent,38,38,True,1.0
+balanced,A vehicle stops and then slows down.,congruent,10,10,True,1.0
+balanced,A vehicle stops and then reduces its speed.,congruent,10,10,True,1.0
+balanced,A vehicle comes to a stop and then slows down.,congruent,10,10,True,1.0
+balanced,A vehicle comes to a stop and then reduces its speed.,congruent,10,10,True,1.0
+balanced,A vehicle stops and then speeds up.,congruent,266,10,False,0.01845018450184502
+balanced,A vehicle stops and then accelerates.,congruent,266,266,True,1.0
+balanced,A vehicle comes to a stop and then speeds up.,congruent,266,266,True,1.0
+balanced,A vehicle comes to a stop and then accelerates.,congruent,266,266,True,1.0
+balanced,A vehicle slows down while turning.,simultaneous,23,23,True,1.0
+balanced,A vehicle slows down while taking a turn.,simultaneous,23,23,True,1.0
+balanced,A vehicle reduces its speed while turning.,simultaneous,23,23,True,1.0
+balanced,A vehicle reduces its speed while taking a turn.,simultaneous,23,23,True,1.0
+balanced,A vehicle turns while slowing down.,simultaneous,23,23,True,1.0
+balanced,A vehicle turns while reducing its speed.,simultaneous,23,23,True,1.0
+balanced,A vehicle takes a turn while slowing down.,simultaneous,23,23,True,1.0
+balanced,A vehicle takes a turn while reducing its speed.,simultaneous,23,23,True,1.0
+balanced,A vehicle speeds up while turning.,simultaneous,87,87,True,1.0
+balanced,A vehicle speeds up while taking a turn.,simultaneous,87,87,True,1.0
+balanced,A vehicle accelerates while turning.,simultaneous,87,87,True,1.0
+balanced,A vehicle accelerates while taking a turn.,simultaneous,87,87,True,1.0
+balanced,A vehicle turns while speeding up.,simultaneous,87,87,True,1.0
+balanced,A vehicle turns while accelerating.,simultaneous,87,87,True,1.0
+balanced,A vehicle takes a turn while speeding up.,simultaneous,87,87,True,1.0
+balanced,A vehicle takes a turn while accelerating.,simultaneous,87,87,True,1.0
+balanced,"While slowing down, a vehicle turns.",simultaneous,23,23,True,1.0
+balanced,"While slowing down, a vehicle takes a turn.",simultaneous,23,23,True,1.0
+balanced,"While reducing its speed, a vehicle turns.",simultaneous,23,23,True,1.0
+balanced,"While reducing its speed, a vehicle takes a turn.",simultaneous,23,23,True,1.0
+balanced,"While turning, a vehicle slows down.",simultaneous,23,23,True,1.0
+balanced,"While turning, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+balanced,"While taking a turn, a vehicle slows down.",simultaneous,23,23,True,1.0
+balanced,"While taking a turn, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+balanced,"While speeding up, a vehicle turns.",simultaneous,87,87,True,1.0
+balanced,"While speeding up, a vehicle takes a turn.",simultaneous,87,87,True,1.0
+balanced,"While accelerating, a vehicle turns.",simultaneous,87,87,True,1.0
+balanced,"While accelerating, a vehicle takes a turn.",simultaneous,87,87,True,1.0
+balanced,"While turning, a vehicle speeds up.",simultaneous,87,87,True,1.0
+balanced,"While turning, a vehicle accelerates.",simultaneous,87,87,True,1.0
+balanced,"While taking a turn, a vehicle speeds up.",simultaneous,87,87,True,1.0
+balanced,"While taking a turn, a vehicle accelerates.",simultaneous,87,87,True,1.0
+balanced,A vehicle slows down as it turns.,simultaneous,23,23,True,1.0
+balanced,A vehicle slows down as it takes a turn.,simultaneous,23,23,True,1.0
+balanced,A vehicle reduces its speed as it turns.,simultaneous,23,23,True,1.0
+balanced,A vehicle reduces its speed as it takes a turn.,simultaneous,23,23,True,1.0
+balanced,A vehicle turns as it slows down.,simultaneous,23,33,False,0.01818181818181818
+balanced,A vehicle turns as it reduces its speed.,simultaneous,23,23,True,1.0
+balanced,A vehicle takes a turn as it slows down.,simultaneous,23,33,False,0.01818181818181818
+balanced,A vehicle takes a turn as it reduces its speed.,simultaneous,23,23,True,1.0
+balanced,A vehicle speeds up as it turns.,simultaneous,87,87,True,1.0
+balanced,A vehicle speeds up as it takes a turn.,simultaneous,87,87,True,1.0
+balanced,A vehicle accelerates as it turns.,simultaneous,87,87,True,1.0
+balanced,A vehicle accelerates as it takes a turn.,simultaneous,87,87,True,1.0
+balanced,A vehicle turns as it speeds up.,simultaneous,87,87,True,1.0
+balanced,A vehicle turns as it accelerates.,simultaneous,87,87,True,1.0
+balanced,A vehicle takes a turn as it speeds up.,simultaneous,87,87,True,1.0
+balanced,A vehicle takes a turn as it accelerates.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle turns before slowing down.,congruent,33,33,True,1.0
+counterbalanced,A vehicle turns before reducing its speed.,congruent,33,33,True,1.0
+counterbalanced,A vehicle takes a turn before slowing down.,congruent,33,33,True,1.0
+counterbalanced,A vehicle takes a turn before reducing its speed.,congruent,33,33,True,1.0
+counterbalanced,A vehicle turns before speeding up.,congruent,7,7,True,1.0
+counterbalanced,A vehicle turns before accelerating.,congruent,7,7,True,1.0
+counterbalanced,A vehicle takes a turn before speeding up.,congruent,7,7,True,1.0
+counterbalanced,A vehicle takes a turn before accelerating.,congruent,7,7,True,1.0
+counterbalanced,A vehicle turns before stopping.,congruent,4,4,True,1.0
+counterbalanced,A vehicle turns before coming to a stop.,congruent,4,4,True,1.0
+counterbalanced,A vehicle takes a turn before stopping.,congruent,4,4,True,1.0
+counterbalanced,A vehicle takes a turn before coming to a stop.,congruent,4,4,True,1.0
+counterbalanced,A vehicle slows down before turning.,congruent,21,21,True,1.0
+counterbalanced,A vehicle slows down before taking a turn.,congruent,21,21,True,1.0
+counterbalanced,A vehicle reduces its speed before turning.,congruent,21,21,True,1.0
+counterbalanced,A vehicle reduces its speed before taking a turn.,congruent,21,29,False,0.0
+counterbalanced,A vehicle slows down before speeding up.,congruent,140,140,True,1.0
+counterbalanced,A vehicle slows down before accelerating.,congruent,140,140,True,1.0
+counterbalanced,A vehicle reduces its speed before speeding up.,congruent,140,207,False,0.084375
+counterbalanced,A vehicle reduces its speed before accelerating.,congruent,140,140,True,1.0
+counterbalanced,A vehicle slows down before stopping.,congruent,266,266,True,1.0
+counterbalanced,A vehicle slows down before coming to a stop.,congruent,266,266,True,1.0
+counterbalanced,A vehicle reduces its speed before stopping.,congruent,266,266,True,1.0
+counterbalanced,A vehicle reduces its speed before coming to a stop.,congruent,266,266,True,1.0
+counterbalanced,A vehicle speeds up before turning.,congruent,29,29,True,1.0
+counterbalanced,A vehicle speeds up before taking a turn.,congruent,29,29,True,1.0
+counterbalanced,A vehicle accelerates before turning.,congruent,29,29,True,1.0
+counterbalanced,A vehicle accelerates before taking a turn.,congruent,29,29,True,1.0
+counterbalanced,A vehicle speeds up before slowing down.,congruent,207,207,True,1.0
+counterbalanced,A vehicle speeds up before reducing its speed.,congruent,207,207,True,1.0
+counterbalanced,A vehicle accelerates before slowing down.,congruent,207,207,True,1.0
+counterbalanced,A vehicle accelerates before reducing its speed.,congruent,207,207,True,1.0
+counterbalanced,A vehicle speeds up before stopping.,congruent,10,10,True,1.0
+counterbalanced,A vehicle speeds up before coming to a stop.,congruent,10,10,True,1.0
+counterbalanced,A vehicle accelerates before stopping.,congruent,10,10,True,1.0
+counterbalanced,A vehicle accelerates before coming to a stop.,congruent,10,10,True,1.0
+counterbalanced,A vehicle stops before turning.,congruent,38,38,True,1.0
+counterbalanced,A vehicle stops before taking a turn.,congruent,38,38,True,1.0
+counterbalanced,A vehicle comes to a stop before turning.,congruent,38,4,False,0.0
+counterbalanced,A vehicle comes to a stop before taking a turn.,congruent,38,4,False,0.0
+counterbalanced,A vehicle stops before slowing down.,congruent,10,10,True,1.0
+counterbalanced,A vehicle stops before reducing its speed.,congruent,10,10,True,1.0
+counterbalanced,A vehicle comes to a stop before slowing down.,congruent,10,10,True,1.0
+counterbalanced,A vehicle comes to a stop before reducing its speed.,congruent,10,10,True,1.0
+counterbalanced,A vehicle stops before speeding up.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle stops before accelerating.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle comes to a stop before speeding up.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle comes to a stop before accelerating.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle turns after slowing down.,incongruent,21,33,False,0.0
+counterbalanced,A vehicle turns after reducing its speed.,incongruent,21,33,False,0.0
+counterbalanced,A vehicle takes a turn after slowing down.,incongruent,21,21,True,1.0
+counterbalanced,A vehicle takes a turn after reducing its speed.,incongruent,21,21,True,1.0
+counterbalanced,A vehicle turns after speeding up.,incongruent,29,29,True,1.0
+counterbalanced,A vehicle turns after accelerating.,incongruent,29,29,True,1.0
+counterbalanced,A vehicle takes a turn after speeding up.,incongruent,29,29,True,1.0
+counterbalanced,A vehicle takes a turn after accelerating.,incongruent,29,29,True,1.0
+counterbalanced,A vehicle turns after stopping.,incongruent,38,4,False,0.0
+counterbalanced,A vehicle turns after coming to a stop.,incongruent,38,4,False,0.0
+counterbalanced,A vehicle takes a turn after stopping.,incongruent,38,4,False,0.0
+counterbalanced,A vehicle takes a turn after coming to a stop.,incongruent,38,4,False,0.0
+counterbalanced,A vehicle slows down after turning.,incongruent,33,21,False,0.0
+counterbalanced,A vehicle slows down after taking a turn.,incongruent,33,21,False,0.0
+counterbalanced,A vehicle reduces its speed after turning.,incongruent,33,23,False,0.01818181818181818
+counterbalanced,A vehicle reduces its speed after taking a turn.,incongruent,33,21,False,0.0
+counterbalanced,A vehicle slows down after speeding up.,incongruent,207,207,True,1.0
+counterbalanced,A vehicle slows down after accelerating.,incongruent,207,207,True,1.0
+counterbalanced,A vehicle reduces its speed after speeding up.,incongruent,207,207,True,1.0
+counterbalanced,A vehicle reduces its speed after accelerating.,incongruent,207,207,True,1.0
+counterbalanced,A vehicle slows down after stopping.,incongruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle slows down after coming to a stop.,incongruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle reduces its speed after stopping.,incongruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle reduces its speed after coming to a stop.,incongruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle speeds up after turning.,incongruent,7,29,False,0.0
+counterbalanced,A vehicle speeds up after taking a turn.,incongruent,7,29,False,0.0
+counterbalanced,A vehicle accelerates after turning.,incongruent,7,29,False,0.0
+counterbalanced,A vehicle accelerates after taking a turn.,incongruent,7,29,False,0.0
+counterbalanced,A vehicle speeds up after slowing down.,incongruent,140,140,True,1.0
+counterbalanced,A vehicle speeds up after reducing its speed.,incongruent,140,207,False,0.084375
+counterbalanced,A vehicle accelerates after slowing down.,incongruent,140,140,True,1.0
+counterbalanced,A vehicle accelerates after reducing its speed.,incongruent,140,0,False,0.0
+counterbalanced,A vehicle speeds up after stopping.,incongruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle speeds up after coming to a stop.,incongruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle accelerates after stopping.,incongruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle accelerates after coming to a stop.,incongruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle stops after turning.,incongruent,4,4,True,1.0
+counterbalanced,A vehicle stops after taking a turn.,incongruent,4,4,True,1.0
+counterbalanced,A vehicle comes to a stop after turning.,incongruent,4,4,True,1.0
+counterbalanced,A vehicle comes to a stop after taking a turn.,incongruent,4,4,True,1.0
+counterbalanced,A vehicle stops after slowing down.,incongruent,266,266,True,1.0
+counterbalanced,A vehicle stops after reducing its speed.,incongruent,266,10,False,0.033707865168539325
+counterbalanced,A vehicle comes to a stop after slowing down.,incongruent,266,266,True,1.0
+counterbalanced,A vehicle comes to a stop after reducing its speed.,incongruent,266,10,False,0.033707865168539325
+counterbalanced,A vehicle stops after speeding up.,incongruent,10,10,True,1.0
+counterbalanced,A vehicle stops after accelerating.,incongruent,10,10,True,1.0
+counterbalanced,A vehicle comes to a stop after speeding up.,incongruent,10,10,True,1.0
+counterbalanced,A vehicle comes to a stop after accelerating.,incongruent,10,10,True,1.0
+counterbalanced,"Before turning, a vehicle slows down.",incongruent,21,23,False,0.1
+counterbalanced,"Before turning, a vehicle reduces its speed.",incongruent,21,21,True,1.0
+counterbalanced,"Before taking a turn, a vehicle slows down.",incongruent,21,21,True,1.0
+counterbalanced,"Before taking a turn, a vehicle reduces its speed.",incongruent,21,29,False,0.0
+counterbalanced,"Before turning, a vehicle speeds up.",incongruent,29,29,True,1.0
+counterbalanced,"Before turning, a vehicle accelerates.",incongruent,29,29,True,1.0
+counterbalanced,"Before taking a turn, a vehicle speeds up.",incongruent,29,29,True,1.0
+counterbalanced,"Before taking a turn, a vehicle accelerates.",incongruent,29,29,True,1.0
+counterbalanced,"Before turning, a vehicle stops.",incongruent,38,0,False,0.0
+counterbalanced,"Before turning, a vehicle comes to a stop.",incongruent,38,0,False,0.0
+counterbalanced,"Before taking a turn, a vehicle stops.",incongruent,38,0,False,0.0
+counterbalanced,"Before taking a turn, a vehicle comes to a stop.",incongruent,38,0,False,0.0
+counterbalanced,"Before slowing down, a vehicle turns.",incongruent,33,23,False,0.01818181818181818
+counterbalanced,"Before slowing down, a vehicle takes a turn.",incongruent,33,23,False,0.01818181818181818
+counterbalanced,"Before reducing its speed, a vehicle turns.",incongruent,33,23,False,0.01818181818181818
+counterbalanced,"Before reducing its speed, a vehicle takes a turn.",incongruent,33,23,False,0.01818181818181818
+counterbalanced,"Before slowing down, a vehicle speeds up.",incongruent,207,207,True,1.0
+counterbalanced,"Before slowing down, a vehicle accelerates.",incongruent,207,207,True,1.0
+counterbalanced,"Before reducing its speed, a vehicle speeds up.",incongruent,207,207,True,1.0
+counterbalanced,"Before reducing its speed, a vehicle accelerates.",incongruent,207,207,True,1.0
+counterbalanced,"Before slowing down, a vehicle stops.",incongruent,10,10,True,1.0
+counterbalanced,"Before slowing down, a vehicle comes to a stop.",incongruent,10,10,True,1.0
+counterbalanced,"Before reducing its speed, a vehicle stops.",incongruent,10,266,False,0.022222222222222223
+counterbalanced,"Before reducing its speed, a vehicle comes to a stop.",incongruent,10,266,False,0.022222222222222223
+counterbalanced,"Before speeding up, a vehicle turns.",incongruent,7,87,False,0.021739130434782608
+counterbalanced,"Before speeding up, a vehicle takes a turn.",incongruent,7,7,True,1.0
+counterbalanced,"Before accelerating, a vehicle turns.",incongruent,7,87,False,0.021739130434782608
+counterbalanced,"Before accelerating, a vehicle takes a turn.",incongruent,7,87,False,0.021739130434782608
+counterbalanced,"Before speeding up, a vehicle slows down.",incongruent,140,140,True,1.0
+counterbalanced,"Before speeding up, a vehicle reduces its speed.",incongruent,140,140,True,1.0
+counterbalanced,"Before accelerating, a vehicle slows down.",incongruent,140,140,True,1.0
+counterbalanced,"Before accelerating, a vehicle reduces its speed.",incongruent,140,140,True,1.0
+counterbalanced,"Before speeding up, a vehicle stops.",incongruent,266,10,False,0.01845018450184502
+counterbalanced,"Before speeding up, a vehicle comes to a stop.",incongruent,266,10,False,0.01845018450184502
+counterbalanced,"Before accelerating, a vehicle stops.",incongruent,266,10,False,0.01845018450184502
+counterbalanced,"Before accelerating, a vehicle comes to a stop.",incongruent,266,10,False,0.01845018450184502
+counterbalanced,"Before stopping, a vehicle turns.",incongruent,4,0,False,0.0
+counterbalanced,"Before stopping, a vehicle takes a turn.",incongruent,4,0,False,0.0
+counterbalanced,"Before coming to a stop, a vehicle turns.",incongruent,4,0,False,0.0
+counterbalanced,"Before coming to a stop, a vehicle takes a turn.",incongruent,4,0,False,0.0
+counterbalanced,"Before stopping, a vehicle slows down.",incongruent,266,266,True,1.0
+counterbalanced,"Before stopping, a vehicle reduces its speed.",incongruent,266,10,False,0.033707865168539325
+counterbalanced,"Before coming to a stop, a vehicle slows down.",incongruent,266,266,True,1.0
+counterbalanced,"Before coming to a stop, a vehicle reduces its speed.",incongruent,266,10,False,0.033707865168539325
+counterbalanced,"Before stopping, a vehicle speeds up.",incongruent,10,10,True,1.0
+counterbalanced,"Before stopping, a vehicle accelerates.",incongruent,10,10,True,1.0
+counterbalanced,"Before coming to a stop, a vehicle speeds up.",incongruent,10,10,True,1.0
+counterbalanced,"Before coming to a stop, a vehicle accelerates.",incongruent,10,10,True,1.0
+counterbalanced,"After turning, a vehicle slows down.",congruent,33,33,True,1.0
+counterbalanced,"After turning, a vehicle reduces its speed.",congruent,33,33,True,1.0
+counterbalanced,"After taking a turn, a vehicle slows down.",congruent,33,21,False,0.0
+counterbalanced,"After taking a turn, a vehicle reduces its speed.",congruent,33,21,False,0.0
+counterbalanced,"After turning, a vehicle speeds up.",congruent,7,29,False,0.0
+counterbalanced,"After turning, a vehicle accelerates.",congruent,7,29,False,0.0
+counterbalanced,"After taking a turn, a vehicle speeds up.",congruent,7,29,False,0.0
+counterbalanced,"After taking a turn, a vehicle accelerates.",congruent,7,29,False,0.0
+counterbalanced,"After turning, a vehicle stops.",congruent,4,4,True,1.0
+counterbalanced,"After turning, a vehicle comes to a stop.",congruent,4,4,True,1.0
+counterbalanced,"After taking a turn, a vehicle stops.",congruent,4,38,False,0.0
+counterbalanced,"After taking a turn, a vehicle comes to a stop.",congruent,4,4,True,1.0
+counterbalanced,"After slowing down, a vehicle turns.",congruent,21,21,True,1.0
+counterbalanced,"After slowing down, a vehicle takes a turn.",congruent,21,21,True,1.0
+counterbalanced,"After reducing its speed, a vehicle turns.",congruent,21,21,True,1.0
+counterbalanced,"After reducing its speed, a vehicle takes a turn.",congruent,21,21,True,1.0
+counterbalanced,"After slowing down, a vehicle speeds up.",congruent,140,140,True,1.0
+counterbalanced,"After slowing down, a vehicle accelerates.",congruent,140,140,True,1.0
+counterbalanced,"After reducing its speed, a vehicle speeds up.",congruent,140,140,True,1.0
+counterbalanced,"After reducing its speed, a vehicle accelerates.",congruent,140,140,True,1.0
+counterbalanced,"After slowing down, a vehicle stops.",congruent,266,266,True,1.0
+counterbalanced,"After slowing down, a vehicle comes to a stop.",congruent,266,266,True,1.0
+counterbalanced,"After reducing its speed, a vehicle stops.",congruent,266,266,True,1.0
+counterbalanced,"After reducing its speed, a vehicle comes to a stop.",congruent,266,266,True,1.0
+counterbalanced,"After speeding up, a vehicle turns.",congruent,29,29,True,1.0
+counterbalanced,"After speeding up, a vehicle takes a turn.",congruent,29,29,True,1.0
+counterbalanced,"After accelerating, a vehicle turns.",congruent,29,29,True,1.0
+counterbalanced,"After accelerating, a vehicle takes a turn.",congruent,29,29,True,1.0
+counterbalanced,"After speeding up, a vehicle slows down.",congruent,207,207,True,1.0
+counterbalanced,"After speeding up, a vehicle reduces its speed.",congruent,207,207,True,1.0
+counterbalanced,"After accelerating, a vehicle slows down.",congruent,207,207,True,1.0
+counterbalanced,"After accelerating, a vehicle reduces its speed.",congruent,207,207,True,1.0
+counterbalanced,"After speeding up, a vehicle stops.",congruent,10,10,True,1.0
+counterbalanced,"After speeding up, a vehicle comes to a stop.",congruent,10,10,True,1.0
+counterbalanced,"After accelerating, a vehicle stops.",congruent,10,10,True,1.0
+counterbalanced,"After accelerating, a vehicle comes to a stop.",congruent,10,10,True,1.0
+counterbalanced,"After stopping, a vehicle turns.",congruent,38,4,False,0.0
+counterbalanced,"After stopping, a vehicle takes a turn.",congruent,38,4,False,0.0
+counterbalanced,"After coming to a stop, a vehicle turns.",congruent,38,4,False,0.0
+counterbalanced,"After coming to a stop, a vehicle takes a turn.",congruent,38,4,False,0.0
+counterbalanced,"After stopping, a vehicle slows down.",congruent,10,266,False,0.022222222222222223
+counterbalanced,"After stopping, a vehicle reduces its speed.",congruent,10,266,False,0.022222222222222223
+counterbalanced,"After coming to a stop, a vehicle slows down.",congruent,10,266,False,0.022222222222222223
+counterbalanced,"After coming to a stop, a vehicle reduces its speed.",congruent,10,266,False,0.022222222222222223
+counterbalanced,"After stopping, a vehicle speeds up.",congruent,266,10,False,0.01845018450184502
+counterbalanced,"After stopping, a vehicle accelerates.",congruent,266,10,False,0.01845018450184502
+counterbalanced,"After coming to a stop, a vehicle speeds up.",congruent,266,10,False,0.01845018450184502
+counterbalanced,"After coming to a stop, a vehicle accelerates.",congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle turns and then slows down.,congruent,33,33,True,1.0
+counterbalanced,A vehicle turns and then reduces its speed.,congruent,33,33,True,1.0
+counterbalanced,A vehicle takes a turn and then slows down.,congruent,33,33,True,1.0
+counterbalanced,A vehicle takes a turn and then reduces its speed.,congruent,33,33,True,1.0
+counterbalanced,A vehicle turns and then speeds up.,congruent,7,7,True,1.0
+counterbalanced,A vehicle turns and then accelerates.,congruent,7,7,True,1.0
+counterbalanced,A vehicle takes a turn and then speeds up.,congruent,7,29,False,0.0
+counterbalanced,A vehicle takes a turn and then accelerates.,congruent,7,29,False,0.0
+counterbalanced,A vehicle turns and then stops.,congruent,4,4,True,1.0
+counterbalanced,A vehicle turns and then comes to a stop.,congruent,4,4,True,1.0
+counterbalanced,A vehicle takes a turn and then stops.,congruent,4,4,True,1.0
+counterbalanced,A vehicle takes a turn and then comes to a stop.,congruent,4,4,True,1.0
+counterbalanced,A vehicle slows down and then turns.,congruent,21,21,True,1.0
+counterbalanced,A vehicle slows down and then takes a turn.,congruent,21,21,True,1.0
+counterbalanced,A vehicle reduces its speed and then turns.,congruent,21,21,True,1.0
+counterbalanced,A vehicle reduces its speed and then takes a turn.,congruent,21,21,True,1.0
+counterbalanced,A vehicle slows down and then speeds up.,congruent,140,140,True,1.0
+counterbalanced,A vehicle slows down and then accelerates.,congruent,140,140,True,1.0
+counterbalanced,A vehicle reduces its speed and then speeds up.,congruent,140,140,True,1.0
+counterbalanced,A vehicle reduces its speed and then accelerates.,congruent,140,140,True,1.0
+counterbalanced,A vehicle slows down and then stops.,congruent,266,266,True,1.0
+counterbalanced,A vehicle slows down and then comes to a stop.,congruent,266,266,True,1.0
+counterbalanced,A vehicle reduces its speed and then stops.,congruent,266,266,True,1.0
+counterbalanced,A vehicle reduces its speed and then comes to a stop.,congruent,266,266,True,1.0
+counterbalanced,A vehicle speeds up and then turns.,congruent,29,29,True,1.0
+counterbalanced,A vehicle speeds up and then takes a turn.,congruent,29,29,True,1.0
+counterbalanced,A vehicle accelerates and then turns.,congruent,29,29,True,1.0
+counterbalanced,A vehicle accelerates and then takes a turn.,congruent,29,29,True,1.0
+counterbalanced,A vehicle speeds up and then slows down.,congruent,207,207,True,1.0
+counterbalanced,A vehicle speeds up and then reduces its speed.,congruent,207,207,True,1.0
+counterbalanced,A vehicle accelerates and then slows down.,congruent,207,207,True,1.0
+counterbalanced,A vehicle accelerates and then reduces its speed.,congruent,207,207,True,1.0
+counterbalanced,A vehicle speeds up and then stops.,congruent,10,10,True,1.0
+counterbalanced,A vehicle speeds up and then comes to a stop.,congruent,10,10,True,1.0
+counterbalanced,A vehicle accelerates and then stops.,congruent,10,10,True,1.0
+counterbalanced,A vehicle accelerates and then comes to a stop.,congruent,10,10,True,1.0
+counterbalanced,A vehicle stops and then turns.,congruent,38,4,False,0.0
+counterbalanced,A vehicle stops and then takes a turn.,congruent,38,4,False,0.0
+counterbalanced,A vehicle comes to a stop and then turns.,congruent,38,4,False,0.0
+counterbalanced,A vehicle comes to a stop and then takes a turn.,congruent,38,4,False,0.0
+counterbalanced,A vehicle stops and then slows down.,congruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle stops and then reduces its speed.,congruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle comes to a stop and then slows down.,congruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle comes to a stop and then reduces its speed.,congruent,10,266,False,0.022222222222222223
+counterbalanced,A vehicle stops and then speeds up.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle stops and then accelerates.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle comes to a stop and then speeds up.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle comes to a stop and then accelerates.,congruent,266,10,False,0.01845018450184502
+counterbalanced,A vehicle slows down while turning.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle slows down while taking a turn.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle reduces its speed while turning.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle reduces its speed while taking a turn.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle turns while slowing down.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle turns while reducing its speed.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle takes a turn while slowing down.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle takes a turn while reducing its speed.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle speeds up while turning.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle speeds up while taking a turn.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle accelerates while turning.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle accelerates while taking a turn.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle turns while speeding up.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle turns while accelerating.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle takes a turn while speeding up.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle takes a turn while accelerating.,simultaneous,87,87,True,1.0
+counterbalanced,"While slowing down, a vehicle turns.",simultaneous,23,23,True,1.0
+counterbalanced,"While slowing down, a vehicle takes a turn.",simultaneous,23,23,True,1.0
+counterbalanced,"While reducing its speed, a vehicle turns.",simultaneous,23,23,True,1.0
+counterbalanced,"While reducing its speed, a vehicle takes a turn.",simultaneous,23,23,True,1.0
+counterbalanced,"While turning, a vehicle slows down.",simultaneous,23,23,True,1.0
+counterbalanced,"While turning, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+counterbalanced,"While taking a turn, a vehicle slows down.",simultaneous,23,23,True,1.0
+counterbalanced,"While taking a turn, a vehicle reduces its speed.",simultaneous,23,23,True,1.0
+counterbalanced,"While speeding up, a vehicle turns.",simultaneous,87,87,True,1.0
+counterbalanced,"While speeding up, a vehicle takes a turn.",simultaneous,87,87,True,1.0
+counterbalanced,"While accelerating, a vehicle turns.",simultaneous,87,87,True,1.0
+counterbalanced,"While accelerating, a vehicle takes a turn.",simultaneous,87,87,True,1.0
+counterbalanced,"While turning, a vehicle speeds up.",simultaneous,87,87,True,1.0
+counterbalanced,"While turning, a vehicle accelerates.",simultaneous,87,87,True,1.0
+counterbalanced,"While taking a turn, a vehicle speeds up.",simultaneous,87,87,True,1.0
+counterbalanced,"While taking a turn, a vehicle accelerates.",simultaneous,87,87,True,1.0
+counterbalanced,A vehicle slows down as it turns.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle slows down as it takes a turn.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle reduces its speed as it turns.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle reduces its speed as it takes a turn.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle turns as it slows down.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle turns as it reduces its speed.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle takes a turn as it slows down.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle takes a turn as it reduces its speed.,simultaneous,23,23,True,1.0
+counterbalanced,A vehicle speeds up as it turns.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle speeds up as it takes a turn.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle accelerates as it turns.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle accelerates as it takes a turn.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle turns as it speeds up.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle turns as it accelerates.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle takes a turn as it speeds up.,simultaneous,87,87,True,1.0
+counterbalanced,A vehicle takes a turn as it accelerates.,simultaneous,87,87,True,1.0

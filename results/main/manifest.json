@@ -1,0 +1,19 @@
+{
+ "engine": "0.4.0",
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "seed": 2026,
+ "dev_sha256": "7102eabaa6c3090e4b7dfba01f87bdf6ff6b0de4d192a1e7a32ccbdc51579740",
+ "eval_tpl_sha256": "1e4209b602e31a58cf0024ace9ac91969785706733715182ac427ec22c7ea275",
+ "eval_free_sha256": "64ff02138a8ec7c322156300a7c7c99c464152449f23ee735e3c4b5f65d6dacc",
+ "prompts_sha256": "987707e71dd130314bcfbd8fb1795f1795d86b89f0eae84fbfec0d208c6963c7",
+ "n": {
+  "dev": 288,
+  "eval_tpl": 864,
+  "eval_free": 50
+ },
+ "clusters": {
+  "dev": 72,
+  "eval_tpl": 96,
+  "eval_free": 11
+ }
+}

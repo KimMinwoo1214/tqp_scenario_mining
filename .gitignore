@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+# AV2 raw data and large caches are not tracked
+AV2_TEG_Pilot_Data/
+*.feather
+*.pkl
+raw/

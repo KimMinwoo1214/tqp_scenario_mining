@@ -1,0 +1,6 @@
+계층,작동,근거
+Temporal Relation Grounding,True,"관계 정확도 0.792, THEN 방향 정확도: 어순 일치 0.722 / 불일치 0.542"
+Temporal Query Plan,True,"스키마 유효 TQP 1.0, 계획 완전 일치 0.708"
+Temporal Event Graph,True,"트랙 3531, 사건 3269, 관계 엣지 1527 {'THEN': 1299, 'WHILE': 228}"
+Graph Query Execution,True,"32개 TQP 판정·결과 Interval과 일치, 평균 질의 Interval 16.66721 ms / Graph 0.10129 ms, 구축 239.271 ms, 손익분기 15회"
+End-to-end,True,LLM TQP와 정답 TQP의 검색 트랙 집합 일치율: 정답 결과가 있는 문장 72개 기준 0.708 (빈 결과 포함 전체 0.708)

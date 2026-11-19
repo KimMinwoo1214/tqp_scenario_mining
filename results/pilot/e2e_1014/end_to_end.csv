@@ -1,0 +1,73 @@
+sentence,condition,gold,pred,gold_tracks,pred_tracks,same_track_set,jaccard
+A vehicle turns before slowing down.,congruent,TURN THEN DECELERATE,TURN WHILE DECELERATE,31,23,False,0.018867924528301886
+A vehicle turns before speeding up.,congruent,TURN THEN ACCELERATE,TURN THEN ACCELERATE,13,13,True,1.0
+A vehicle turns before stopping.,congruent,TURN THEN STOP,TURN THEN STOP,6,6,True,1.0
+A vehicle slows down before turning.,congruent,DECELERATE THEN TURN,DECELERATE WHILE TURN,28,23,False,0.10869565217391304
+A vehicle slows down before speeding up.,congruent,DECELERATE THEN ACCELERATE,DECELERATE THEN ACCELERATE,108,108,True,1.0
+A vehicle slows down before stopping.,congruent,DECELERATE THEN STOP,DECELERATE THEN STOP,207,207,True,1.0
+A vehicle speeds up before turning.,congruent,ACCELERATE THEN TURN,ACCELERATE WHILE TURN,24,87,False,0.04716981132075472
+A vehicle speeds up before slowing down.,congruent,ACCELERATE THEN DECELERATE,ACCELERATE WHILE DECELERATE,148,0,False,0.0
+A vehicle speeds up before stopping.,congruent,ACCELERATE THEN STOP,ACCELERATE THEN STOP,9,9,True,1.0
+A vehicle stops before turning.,congruent,STOP THEN TURN,TURN WHILE STOP,40,1,False,0.0
+A vehicle stops before slowing down.,congruent,STOP THEN DECELERATE,STOP WHILE DECELERATE,6,0,False,0.0
+A vehicle stops before speeding up.,congruent,STOP THEN ACCELERATE,STOP WHILE ACCELERATE,242,0,False,0.0
+A vehicle turns after slowing down.,incongruent,DECELERATE THEN TURN,DECELERATE THEN TURN,28,28,True,1.0
+A vehicle turns after speeding up.,incongruent,ACCELERATE THEN TURN,ACCELERATE THEN TURN,24,24,True,1.0
+A vehicle turns after stopping.,incongruent,STOP THEN TURN,TURN THEN STOP,40,6,False,0.022222222222222223
+A vehicle slows down after turning.,incongruent,TURN THEN DECELERATE,TURN THEN DECELERATE,31,31,True,1.0
+A vehicle slows down after speeding up.,incongruent,ACCELERATE THEN DECELERATE,DECELERATE THEN ACCELERATE,148,108,False,0.19626168224299065
+A vehicle slows down after stopping.,incongruent,STOP THEN DECELERATE,STOP THEN DECELERATE,6,6,True,1.0
+A vehicle speeds up after turning.,incongruent,TURN THEN ACCELERATE,TURN THEN ACCELERATE,13,13,True,1.0
+A vehicle speeds up after slowing down.,incongruent,DECELERATE THEN ACCELERATE,DECELERATE THEN ACCELERATE,108,108,True,1.0
+A vehicle speeds up after stopping.,incongruent,STOP THEN ACCELERATE,STOP THEN ACCELERATE,242,242,True,1.0
+A vehicle stops after turning.,incongruent,TURN THEN STOP,TURN THEN STOP,6,6,True,1.0
+A vehicle stops after slowing down.,incongruent,DECELERATE THEN STOP,DECELERATE THEN STOP,207,207,True,1.0
+A vehicle stops after speeding up.,incongruent,ACCELERATE THEN STOP,STOP THEN ACCELERATE,9,242,False,0.02032520325203252
+"Before turning, a vehicle slows down.",incongruent,DECELERATE THEN TURN,DECELERATE WHILE TURN,28,23,False,0.10869565217391304
+"Before turning, a vehicle speeds up.",incongruent,ACCELERATE THEN TURN,ACCELERATE WHILE TURN,24,87,False,0.04716981132075472
+"Before turning, a vehicle stops.",incongruent,STOP THEN TURN,STOP WHILE TURN,40,1,False,0.0
+"Before slowing down, a vehicle turns.",incongruent,TURN THEN DECELERATE,TURN WHILE DECELERATE,31,23,False,0.018867924528301886
+"Before slowing down, a vehicle speeds up.",incongruent,ACCELERATE THEN DECELERATE,ACCELERATE WHILE DECELERATE,148,0,False,0.0
+"Before slowing down, a vehicle stops.",incongruent,STOP THEN DECELERATE,STOP WHILE DECELERATE,6,0,False,0.0
+"Before speeding up, a vehicle turns.",incongruent,TURN THEN ACCELERATE,TURN WHILE ACCELERATE,13,87,False,0.07526881720430108
+"Before speeding up, a vehicle slows down.",incongruent,DECELERATE THEN ACCELERATE,DECELERATE WHILE ACCELERATE,108,0,False,0.0
+"Before speeding up, a vehicle stops.",incongruent,STOP THEN ACCELERATE,STOP THEN ACCELERATE,242,242,True,1.0
+"Before stopping, a vehicle turns.",incongruent,TURN THEN STOP,TURN THEN STOP,6,6,True,1.0
+"Before stopping, a vehicle slows down.",incongruent,DECELERATE THEN STOP,DECELERATE THEN STOP,207,207,True,1.0
+"Before stopping, a vehicle speeds up.",incongruent,ACCELERATE THEN STOP,ACCELERATE THEN STOP,9,9,True,1.0
+"After turning, a vehicle slows down.",congruent,TURN THEN DECELERATE,TURN THEN DECELERATE,31,31,True,1.0
+"After turning, a vehicle speeds up.",congruent,TURN THEN ACCELERATE,TURN THEN ACCELERATE,13,13,True,1.0
+"After turning, a vehicle stops.",congruent,TURN THEN STOP,TURN THEN STOP,6,6,True,1.0
+"After slowing down, a vehicle turns.",congruent,DECELERATE THEN TURN,TURN THEN DECELERATE,28,31,False,0.0
+"After slowing down, a vehicle speeds up.",congruent,DECELERATE THEN ACCELERATE,DECELERATE THEN ACCELERATE,108,108,True,1.0
+"After slowing down, a vehicle stops.",congruent,DECELERATE THEN STOP,DECELERATE THEN STOP,207,207,True,1.0
+"After speeding up, a vehicle turns.",congruent,ACCELERATE THEN TURN,TURN THEN ACCELERATE,24,13,False,0.0
+"After speeding up, a vehicle slows down.",congruent,ACCELERATE THEN DECELERATE,ACCELERATE THEN DECELERATE,148,148,True,1.0
+"After speeding up, a vehicle stops.",congruent,ACCELERATE THEN STOP,ACCELERATE THEN STOP,9,9,True,1.0
+"After stopping, a vehicle turns.",congruent,STOP THEN TURN,TURN THEN STOP,40,6,False,0.022222222222222223
+"After stopping, a vehicle slows down.",congruent,STOP THEN DECELERATE,STOP THEN DECELERATE,6,6,True,1.0
+"After stopping, a vehicle speeds up.",congruent,STOP THEN ACCELERATE,STOP THEN ACCELERATE,242,242,True,1.0
+A vehicle turns and then slows down.,congruent,TURN THEN DECELERATE,TURN THEN DECELERATE,31,31,True,1.0
+A vehicle turns and then speeds up.,congruent,TURN THEN ACCELERATE,TURN THEN ACCELERATE,13,13,True,1.0
+A vehicle turns and then stops.,congruent,TURN THEN STOP,TURN THEN STOP,6,6,True,1.0
+A vehicle slows down and then turns.,congruent,DECELERATE THEN TURN,DECELERATE THEN TURN,28,28,True,1.0
+A vehicle slows down and then speeds up.,congruent,DECELERATE THEN ACCELERATE,DECELERATE THEN ACCELERATE,108,108,True,1.0
+A vehicle slows down and then stops.,congruent,DECELERATE THEN STOP,DECELERATE THEN STOP,207,207,True,1.0
+A vehicle speeds up and then turns.,congruent,ACCELERATE THEN TURN,ACCELERATE THEN TURN,24,24,True,1.0
+A vehicle speeds up and then slows down.,congruent,ACCELERATE THEN DECELERATE,ACCELERATE THEN DECELERATE,148,148,True,1.0
+A vehicle speeds up and then stops.,congruent,ACCELERATE THEN STOP,ACCELERATE THEN STOP,9,9,True,1.0
+A vehicle stops and then turns.,congruent,STOP THEN TURN,STOP THEN TURN,40,40,True,1.0
+A vehicle stops and then slows down.,congruent,STOP THEN DECELERATE,STOP THEN DECELERATE,6,6,True,1.0
+A vehicle stops and then speeds up.,congruent,STOP THEN ACCELERATE,STOP THEN ACCELERATE,242,242,True,1.0
+A vehicle slows down while turning.,simultaneous,DECELERATE WHILE TURN,DECELERATE WHILE TURN,23,23,True,1.0
+A vehicle turns while slowing down.,simultaneous,TURN WHILE DECELERATE,TURN WHILE DECELERATE,23,23,True,1.0
+A vehicle speeds up while turning.,simultaneous,ACCELERATE WHILE TURN,TURN WHILE ACCELERATE,87,87,True,1.0
+A vehicle turns while speeding up.,simultaneous,TURN WHILE ACCELERATE,TURN WHILE ACCELERATE,87,87,True,1.0
+"While slowing down, a vehicle turns.",simultaneous,DECELERATE WHILE TURN,DECELERATE WHILE TURN,23,23,True,1.0
+"While turning, a vehicle slows down.",simultaneous,TURN WHILE DECELERATE,TURN WHILE DECELERATE,23,23,True,1.0
+"While speeding up, a vehicle turns.",simultaneous,ACCELERATE WHILE TURN,ACCELERATE WHILE TURN,87,87,True,1.0
+"While turning, a vehicle speeds up.",simultaneous,TURN WHILE ACCELERATE,TURN WHILE ACCELERATE,87,87,True,1.0
+A vehicle slows down as it turns.,simultaneous,DECELERATE WHILE TURN,DECELERATE WHILE TURN,23,23,True,1.0
+A vehicle turns as it slows down.,simultaneous,TURN WHILE DECELERATE,TURN WHILE DECELERATE,23,23,True,1.0
+A vehicle speeds up as it turns.,simultaneous,ACCELERATE WHILE TURN,ACCELERATE WHILE TURN,87,87,True,1.0
+A vehicle turns as it speeds up.,simultaneous,TURN WHILE ACCELERATE,TURN WHILE ACCELERATE,87,87,True,1.0

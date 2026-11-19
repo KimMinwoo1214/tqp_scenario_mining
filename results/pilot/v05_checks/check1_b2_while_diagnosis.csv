@@ -1,0 +1,2135 @@
+template,connective,condition,sentence,gold_tqp,first_mentioned,gold_first,gold_relation,gold_second,verbs,pair,variant,method,raw_output,pred,error,pred_lenient,exact_lenient,valid,relation_correct,events_correct,direction_correct,exact,probe_exact,probe_pattern,re_exact,re_probe_exact,while_class,diag_error,has_0.8,has_5s,types_in_code,acc_while_same,acc_while_cur,acc_then_xy,acc_then_yx
+while,while,simultaneous,A vehicle slows down while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] == 'TURN':
+                # Check if they overlap or if one happens after the other within allowed bounds
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+                elif events[i]['start'] > events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if -0.5 <= events[j]['start'] - events[i]['end'] <= 5.0:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates over all pairs of events to check if any two events meet the specified conditions. If so, it returns `True`. If no such pair is found, it returns `False`.",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle slows down while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    prev_end = None
+    
+    for event in events:
+        if 'turn' in event['type']:
+            if prev_end is not None:
+                if 'while' in event['type'] or 'then' in event['type']:
+                    return True
+                elif abs(event['start'] - prev_end) > 1.0:
+                    return True
+            else:
+                return True
+                
+        prev_end = event['end']
+        
+    return False
+```
+
+This function first sorts the events by their start time to ensure we process them in chronological order. It then iterates through each event, checking if it meets the conditions specified in the problem statement. If an event meets these criteria, it returns `True`. If no such event exists, it returns `False`.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,,False,False,False,False
+while,while,simultaneous,A vehicle reduces its speed while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    prev_end = None
+    
+    for event in events:
+        if 'turn' in event['type']:
+            if prev_end is not None:
+                # Check if there was a turn while the previous event was happening
+                if event['start'] < prev_end + 1 and abs(event['start'] - prev_end) <= 2:
+                    return True
+            
+            # If no previous event or it wasn't a turn, check if the current turn overlaps with any other event
+            if prev_end is None or overlap(events[events.index(prev_end)+1:], [event]) == 0:
+                return True
+        
+        prev_end = event['end']
+    
+    return False
+
+# Helper function to calculate overlap between two intervals
+def overlap(interval_a, interval_b):
+    return max(0, min(interval_a[-1], interval_b[-1]) - max(interval_a[0], interval_b[0]))
+```
+
+This solution first sorts the events by their start times. Then, it iterates through each event, checking if it represents a turn and either:
+
+1. Checking if this turn happened during another event's duration.
+2. Ensuring that the turn does not overlap significantly with any other event.
+
+If such an event is found, it returns `True`. Otherwise, after iterating through all events, it returns `False` if no matching condition is met.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,,False,False,False,False
+while,while,simultaneous,A vehicle reduces its speed while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    prev_end = None
+    
+    for event in events:
+        if 'DECELERATE' == event['type']:
+            if prev_end is not None:
+                # Check if there was a turn or stop between this deceleration and the previous event
+                if 'TURN' in [prev_event['type'] for prev_event in events] or \
+                   'STOP' in [prev_event['type'] for prev_event in events]:
+                    return True
+                
+                # Check if the current event overlaps with any other event
+                for i, next_event in enumerate(events[i+1:], start=i+1):
+                    if 'ACCELERATE' != next_event['type'] and overlap(event, next_event) <= 0.5:
+                        return True
+            
+            prev_end = event['end']
+            
+    return False
+
+# Helper function to calculate overlap
+def overlap(a, b):
+    return max(0, min(a['end'], b['end']) - max(a['start'], b['start']))
+
+# Example usage
+events = [
+    {'type': 'DECELERATE', 'start': 2.0, 'end': 3.0},
+    {'type': 'TURN', 'start': 4.0, 'end': 6.0},
+    {'type': 'ACCELERATE', 'start': 7.0, 'end': 9.0}
+]
+
+print(matches(events))  # Expected output: True
+```",,compile: NameError: name 'print' is not defined,,False,False,False,False,,False,False,,False,False,FAIL,compile: NameError: name 'print' is not defined,False,False,"TURN,DECELERATE,ACCELERATE,STOP",,,,
+while,while,simultaneous,A vehicle turns while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                # Check if they overlap within the allowed margin
+                if abs(events[i]['start'] - events[j]['start']) <= 2:
+                    return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through all pairs of events to check if any two consecutive events meet the specified conditions. If such an event pair is found, the function returns `True`. Otherwise, after checking all possible pairs, it returns `False` indicating no matching events were found.",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,False,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle turns while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check conditions
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                # Check if they overlap within the allowed margin
+                if abs(events[i]['start'] - events[j]['start']) <= 2:
+                    return True
+                
+    return False
+```
+
+This function first sorts the events based on their start times. Then it iterates over all pairs of events to check if any two consecutive events satisfy the given conditions. If such an event pair is found, it returns `True`. Otherwise, after checking all possible pairs, it returns `False` indicating no matching events were found.",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,False,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle takes a turn while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there exists at least one event where the vehicle turns and slows down
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i][""type""] == ""TURN"" and events[j][""type""] == ""DECELERATE"":
+                return True
+    return False
+```
+
+This function iterates through all pairs of events to check if any pair meets the criteria specified in the problem statement. If it finds such a pair, it returns `True`. Otherwise, after checking all possible pairs, it returns `False`.",OTHER,,,False,True,False,True,,False,False,1011000.0,False,False,MIXED,,False,False,"TURN,DECELERATE",True,True,True,False
+while,while,simultaneous,A vehicle takes a turn while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                # Check if they overlap or if one happens after the other within allowed bounds
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+                
+                elif events[i]['start'] > events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if -0.5 <= events[j]['start'] - events[i]['end'] <= 5.0:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates over all pairs of events to check if any two events meet the specified conditions. If so, it returns `True`. If no such pair is found, it returns `False`.",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle speeds up while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    i = 1
+    while i < len(events):
+        j = i
+        while j < len(events) and events[i]['type'] == 'TURN':
+            j += 1
+        
+        if j == len(events):
+            break
+        
+        if events[j]['type'] != 'ACCELERATE' or events[i]['type'] != 'DECELERATE':
+            return False
+        
+        if events[i]['type'] == 'DECELERATE':
+            if events[j]['type'] == 'STOP':
+                return True
+        
+        if events[i]['type'] == 'ACCELERATE':
+            if events[j]['type'] == 'STOP':
+                return True
+        
+        i = j
+    
+    return False
+```
+
+This function first sorts the events by their start time to ensure we can compare them correctly. Then it iterates through the sorted events, checking each event against its neighbors to see if they satisfy the conditions for the given sentence. If any such pair is found, it returns `True`. Otherwise, after iterating through all pairs without finding a valid match, it returns `False`.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,"TURN,DECELERATE,ACCELERATE,STOP",False,False,False,False
+while,while,simultaneous,A vehicle speeds up while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    i = 1
+    while i < len(events):
+        event_i = events[i]
+        
+        # Check if current event overlaps with previous event
+        prev_event = events[i-1]
+        overlap = max(0, min(event_i['end'], prev_event['end']) - max(event_i['start'], prev_event['start']))
+        
+        if overlap <= 0.5:
+            return True
+        
+        # Check if current event starts after or at the same time as the previous event ends
+        if event_i['start'] <= prev_event['end']:
+            if abs(prev_event['end'] - event_i['start']) <= 5.0:
+                return True
+        
+        i += 1
+    
+    return False
+```
+
+This function first sorts the events by their start time to ensure we can easily compare them. Then it iterates through each event, checking if it overlaps with the previous event or if it starts within the allowed range from the end of the previous event. If either condition is met, it returns `True`. If no such pair is found, it returns `False`.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+while,while,simultaneous,A vehicle accelerates while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    i = 1
+    while i < len(events):
+        j = i
+        while j < len(events) and events[i]['type'] == 'TURN':
+            j += 1
+        
+        if j == len(events):
+            break
+        
+        if events[j]['type'] != 'ACCELERATE' or events[i]['type'] != 'DECELERATE':
+            return False
+        
+        if events[i]['start'] + 0.5 < events[j]['start']:
+            return False
+        
+        if abs(events[j]['start'] - events[i]['end']) > 5:
+            return False
+        
+        i = j
+    
+    return True
+```
+
+This function first sorts the events by their start time to ensure we can compare them easily. Then it iterates through the sorted events, checking each event against the next one to see if they satisfy the conditions of the sentence. If any two consecutive events do not meet these criteria, the function returns `False`. Otherwise, it returns `True` after processing all events.",OTHER,,,False,True,False,False,,False,False,1011110.0,False,False,MIXED,,False,True,"TURN,DECELERATE,ACCELERATE",True,True,True,False
+while,while,simultaneous,A vehicle accelerates while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    i = 1
+    while i < len(events):
+        event_i = events[i]
+        
+        # Check if current event overlaps with previous event
+        prev_event = events[i-1]
+        overlap = max(0, min(event_i['end'], prev_event['end']) - max(event_i['start'], prev_event['start']))
+        
+        if overlap <= 0.5:
+            return True
+        
+        # Check if current event starts after or at the same time as the previous event ends
+        if event_i['start'] <= prev_event['end']:
+            if abs(prev_event['end'] - event_i['start']) <= 5.0:
+                return True
+        
+        i += 1
+    
+    return False
+```
+
+This function first sorts the events by their start time to ensure we can easily compare them. Then it iterates through each event, checking if it overlaps with the previous event or if it starts within the allowed range from the end of the previous event. If either condition is met, it returns `True`. If no such pair is found, it returns `False`.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+while,while,simultaneous,A vehicle turns while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches the criteria
+    for i in range(len(events)):
+        current_event = events[i]
+        
+        # Check if there is an overlapping or simultaneous event with the same type
+        for j in range(i+1, len(events)):
+            other_event = events[j]
+            
+            if current_event['type'] == 'TURN' and other_event['type'] == 'DECELERATE':
+                if overlap(current_event, other_event) <= 0.5:
+                    return True
+            
+            elif current_event['type'] == 'DECELERATE' and other_event['type'] == 'ACCELERATE':
+                if overlap(current_event, other_event) > 0.5 and overlap(current_event, other_event) >= 0.8 * min(current_event['duration'], other_event['duration']):
+                    return True
+    
+    return False
+
+# Helper function to calculate overlap between two events
+def overlap(event_a, event_b):
+    return max(0, min(event_a['end'], event_b['end']) - max(event_a['start'], event_b['start']))
+
+# Example usage
+events = [
+    {'type': 'TURN', 'start': 0, 'end': 2},
+    {'type': 'DECELERATE', 'start': 3, 'end': 4},
+    {'type': 'ACCELERATE', 'start': 5, 'end': 6}
+]
+
+print(matches(events))  # Expected output: True
+```",,compile: NameError: name 'print' is not defined,,False,False,False,False,,False,False,,False,False,FAIL,compile: NameError: name 'print' is not defined,True,True,"TURN,DECELERATE,ACCELERATE",,,,
+while,while,simultaneous,A vehicle turns while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there exists at least one event where the turn occurs after acceleration but within 5 seconds
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i][""type""] == ""TURN"" and events[j][""type""] == ""ACCELERATE"":
+                start_overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                if start_overlap <= 0.5:
+                    return True
+    return False
+```
+
+This function checks all pairs of events to see if any satisfy the condition of turning while accelerating. It uses the `overlap` function defined earlier to calculate the overlap between two events. If an overlap less than or equal to 0.5 is found, it returns True indicating that such a pair exists. If no such pair is found by the end of the loop, it returns False.",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while,while,simultaneous,A vehicle takes a turn while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'ACCELERATE':
+                # Check if they overlap or if one happens after the other within allowed bounds
+                if abs(events[i]['start'] - events[j]['start']) < 2:
+                    return True
+                
+    return False
+```
+
+This solution first sorts the events based on their start times. Then, it iterates through all pairs of events to check if either an acceleration occurs immediately after a turn or vice versa, ensuring there's enough time between them for the turn to occur. If such a pair is found, it returns `True`. Otherwise, it returns `False` after checking all possible pairs.",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,False,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle takes a turn while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there exists at least one event where the vehicle turns and accelerates within the given constraints
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i][""type""] == ""TURN"" and events[j][""type""] == ""ACCELERATE"":
+                start_overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                if start_overlap <= 0.5:
+                    return True
+    return False
+```",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While slowing down, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if any event sequence meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] == 'TURN':
+                start_overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                end_overlap = abs(events[i]['end'] - events[j]['start'])
+                
+                if start_overlap <= 0.5:
+                    return True
+                
+                elif start_overlap > 0.5 and start_overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+                
+                elif end_overlap <= 5.0:
+                    return True
+                
+                elif end_overlap > 5.0 and end_overlap >= 2.0 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function checks all pairs of events to see if they meet the specified conditions. If it finds such a pair, it returns `True`. Otherwise, after checking all possible pairs, it returns `False`.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,True,"TURN,DECELERATE",,,,
+while_fronted,while,simultaneous,"While slowing down, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there exists an event where the vehicle slows down and then turns
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i][""type""] == ""DECELERATE"":
+                if events[j][""type""] == ""TURN"":
+                    return True
+    return False
+```
+
+This solution iterates through all pairs of events to check if any slow-down followed by a turn occurs within the given constraints. If such a sequence is found, it returns `True`. Otherwise, it returns `False` after checking all possible combinations.",OTHER,,,False,True,False,True,,False,False,1011000.0,False,False,MIXED,,False,False,"TURN,DECELERATE",True,True,True,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                # Check if they overlap within the allowed margin
+                if abs(events[i]['start'] - events[j]['start']) < 2:
+                    return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through all pairs of events to check if any two consecutive events meet the specified conditions. If such an event pair is found, the function returns `True`. Otherwise, after checking all possible pairs, it returns `False` indicating no matching events were found.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,"TURN,DECELERATE",False,False,False,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there is any event where the vehicle slows down and then turns
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i][""type""] == ""DECELERATE"":
+                if events[j][""type""] == ""TURN"":
+                    return True
+    return False
+```
+
+This function iterates through all pairs of events to check if either an event with type 'DECELERATE' occurs followed by an event with type 'TURN'. If such a sequence exists, it returns True indicating that the given sentence is satisfied. Otherwise, it returns False.",OTHER,,,False,True,False,True,,False,False,1011000.0,False,False,MIXED,,False,False,"TURN,DECELERATE",True,True,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                # Check if they overlap or if one happens after the other within allowed bounds
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+                elif events[j]['start'] < events[i]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates over all pairs of events to check if any two consecutive events meet the specified conditions. If so, it returns `True`. If no such pair is found, it returns `False`.",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    def overlap(A, B):
+        return max(0, min(A['end'], B['end']) - max(A['start'], B['start']))
+
+    def turn_then_decelerate(turn_event, decel_event):
+        start_turn = turn_event['start']
+        end_turn = turn_event['end']
+        start_decel = decel_event['start']
+        end_decel = decel_event['end']
+
+        # Check if they happen within 1 second of each other
+        if abs(end_turn - start_decel) < 1:
+            overlap_value = overlap(turn_event, decel_event)
+            if overlap_value <= 0.5 or -0.5 <= start_decel - end_turn <= 5:
+                return True
+
+    # Iterate through all pairs of events to find matching ones
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            event_i = events[i]
+            event_j = events[j]
+
+            if event_i['type'] == 'TURN' and event_j['type'] == 'DECELERATE':
+                if turn_then_decelerate(event_i, event_j):
+                    return True
+
+    return False
+```
+
+This solution iterates over all possible pairs of events from the given list and checks if any pair meets the conditions specified by the sentence (""while turning, a vehicle reduces its speed""). If such a pair is found, it returns `True`; otherwise, after checking all pairs, it returns `False`.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,True,"TURN,DECELERATE",False,False,False,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    def overlap(A, B):
+        return max(0, min(A['end'], B['end']) - max(A['start'], B['start']))
+
+    def condition1(A, B):
+        return A['start'] < B['start'] and overlap(A, B) <= 0.5
+
+    def condition2(A, B):
+        return overlap(A, B) > 0.5 and abs(B['start'] - A['end']) <= 5.0
+
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if condition1(events[i], events[j]) or condition2(events[i], events[j]):
+                return True
+    return False
+```
+
+This solution checks all pairs of events to see if they satisfy either condition 1 (""A then B"") or condition 2 (""A while B""). If any such pair exists, it returns True. Otherwise, it returns False.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+while_fronted,while,simultaneous,"While taking a turn, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    def overlap(A, B):
+        return max(0, min(A['end'], B['end']) - max(A['start'], B['start']))
+
+    def condition1(A, B):
+        return A['start'] < B['start'] and overlap(A, B) <= 0.5
+
+    def condition2(A, B):
+        return overlap(A, B) > 0.5 and abs(B['start'] - A['end']) <= 5.0
+
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if condition1(events[i], events[j]) or condition2(events[i], events[j]):
+                return True
+    return False
+```
+
+This solution checks all pairs of events to see if they satisfy either condition 1 (""A then B"") or condition 2 (""A while B""). If any such pair exists, it returns True. Otherwise, it returns False.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+while_fronted,while,simultaneous,"While speeding up, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                # Check if they overlap within the allowed margin
+                if abs(events[i]['end'] - events[j]['start']) <= 2:
+                    return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through each event to find another event with a different type (`ACCELERATE` or `TURN`) that overlaps within an acceptable margin. If such an event is found, it returns `True`. If no matching pairs are found after checking all possible combinations, it returns `False`.",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,False,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While speeding up, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                # Check if they overlap or if one happens after the other within allowed bounds
+                if events[i]['end'] - events[j]['start'] <= 2:
+                    return True
+                
+    return False
+
+# Example usage:
+events_example_1 = [
+    {'type': 'ACCELERATE', 'start': 0, 'end': 3},
+    {'type': 'DECELERATE', 'start': 4, 'end': 6},
+    {'type': 'STOP', 'start': 7, 'end': 9}
+]
+
+events_example_2 = [
+    {'type': 'ACCELERATE', 'start': 0, 'end': 3},
+    {'type': 'TURN', 'start': 4, 'end': 6},
+    {'type': 'DECELERATE', 'start': 7, 'end': 9}
+]
+
+print(matches(events_example_1))  # Expected output: True
+print(matches(events_example_2))  # Expected output: False
+```",,compile: NameError: name 'print' is not defined,,False,False,False,False,,False,False,,False,False,FAIL,compile: NameError: name 'print' is not defined,False,False,"TURN,DECELERATE,ACCELERATE,STOP",,,,
+while_fronted,while,simultaneous,"While accelerating, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events) -> bool:
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        current_event = events[i]
+        
+        # Check if the next event overlaps with this one or if they both accelerate/decelerate at the same time
+        for j in range(i+1, len(events)):
+            next_event = events[j]
+            
+            if current_event[""type""] == ""ACCELERATE"":
+                if next_event[""type""] == ""DECELERATE"":
+                    return True
+                
+            elif current_event[""type""] == ""DECELERATE"":
+                if next_event[""type""] == ""ACCELERATE"":
+                    return True
+            
+            # Check if the events overlap within the allowed margin
+            if current_event[""type""] != ""STOP"":
+                overlap = max(0, min(current_event['end'], next_event['end']) - max(current_event['start'], next_event['start']))
+                
+                if overlap <= 0.5:
+                    continue
+                
+                if -0.5 <= next_event['start'] - current_event['end'] <= 5.0:
+                    return True
+    
+    return False
+```
+
+This function checks if any two consecutive events from the given list meet the specified conditions. It first sorts the events based on their start times. Then, it iterates through each event to find pairs that satisfy the ""while acceleration"" condition. If such a pair is found, it returns `True`. Otherwise, after checking all possible pairs, it returns `False` indicating no matching pairs were found.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,True,"DECELERATE,ACCELERATE,STOP",False,False,False,False
+while_fronted,while,simultaneous,"While accelerating, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            # Check if the current event overlaps with another event
+            if events[i]['start'] <= events[j]['start']:
+                continue
+            
+            # Calculate overlap between the two events
+            overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+            
+            # If there is an overlap greater than or equal to 0.8 * min(duration(A), duration(B)), they match
+            if overlap >= 0.8 * min((events[i]['end'] - events[i]['start']), (events[j]['end'] - events[j]['start'])):
+                return True
+    
+    # If no matching pairs were found, return False
+    return False
+
+# Example usage:
+events_example_1 = [
+    {""type"": ""ACCELERATE"", ""start"": 0, ""end"": 2},
+    {""type"": ""TURN"", ""start"": 3, ""end"": 4}
+]
+
+events_example_2 = [
+    {""type"": ""DECELERATE"", ""start"": 1, ""end"": 3},
+    {""type"": ""STOP"", ""start"": 4, ""end"": 6}
+]
+
+print(matches(events_example_1))  # Expected output: True
+print(matches(events_example_2))  # Expected output: False
+```",,compile: NameError: name 'print' is not defined,,False,False,False,False,,False,False,,False,False,FAIL,compile: NameError: name 'print' is not defined,True,False,"TURN,DECELERATE,ACCELERATE,STOP",,,,
+while_fronted,while,simultaneous,"While turning, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            # Check if there is an overlap between two consecutive events
+            if events[i]['start'] < events[j]['start']:
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                if overlap <= 0.5:
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event and checks if there is an overlap with any subsequent event. If there is an overlap, it calculates the overlap using the `overlap` function defined earlier. If the overlap is less than or equal to 0.5, it means the events do not satisfy the condition of being ""while"". The function returns `True` if such a pair of events exists, indicating that the sentence is satisfied. Otherwise, it returns `False`.",OTHER,,,False,True,False,False,,False,False,1101001.0,False,False,INTERP,,False,False,,False,False,True,True
+while_fronted,while,simultaneous,"While turning, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if it meets the criteria
+    for i in range(len(events)):
+        current_event = events[i]
+        
+        # Check if there is an overlapping or simultaneous event with the current event
+        for j in range(i + 1, len(events)):
+            other_event = events[j]
+            
+            if current_event[""type""] == ""TURN"":
+                if other_event[""type""] in [""ACCELERATE"", ""DECELERATE""]:
+                    if overlap(current_event, other_event) <= 0.5:
+                        return True
+            
+            elif current_event[""type""] in [""ACCELERATE"", ""DECELERATE""]:
+                if other_event[""type""] == ""TURN"":
+                    if overlap(current_event, other_event) > 0.5 and overlap(current_event, other_event) >= 0.8 * min(current_event[""duration""], other_event[""duration""]):
+                        return True
+    
+    return False
+
+# Helper function to calculate overlap between two events
+def overlap(event_a, event_b):
+    return max(0, min(event_a['end'], event_b['end']) - max(event_a['start'], event_b['start']))
+```
+
+This solution checks all pairs of events within the same vehicle to see if they meet the specified conditions. It first sorts the events by their start times to ensure that we can easily compare them. Then, it iterates through each event and checks if any other event overlaps with it based on the given rules. If such an event is found, it returns `True`. If no such event is found after checking all possible pairs, it returns `False`.",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,True,False,"TURN,DECELERATE,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    def overlap(A, B):
+        return max(0, min(A['end'], B['end']) - max(A['start'], B['start']))
+
+    def condition1(A, B):
+        return A['start'] < B['start'] and overlap(A, B) <= 0.5
+
+    def condition2(A, B):
+        return overlap(A, B) > 0.5 and abs(B['start'] - A['end']) <= 5.0
+
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if condition1(events[i], events[j]) or condition2(events[i], events[j]):
+                return True
+    return False
+```
+
+This solution checks all pairs of events to see if they satisfy either condition 1 (""A then B"") or condition 2 (""A while B""). If any such pair exists, it returns True. Otherwise, it returns False.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+while_fronted,while,simultaneous,"While taking a turn, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events) -> bool:
+    def overlap(A, B):
+        return max(0, min(A['end'], B['end']) - max(A['start'], B['start']))
+
+    def condition1(A, B):
+        return A['start'] < B['start'] and overlap(A, B) <= 0.5
+
+    def condition2(A, B):
+        return overlap(A, B) > 0.5 and abs(B['start'] - A['end']) <= 5.0
+
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if condition1(events[i], events[j]) or condition2(events[i], events[j]):
+                return True
+    return False
+```
+
+This solution checks all pairs of events to see if they satisfy either condition 1 (""A then B"") or condition 2 (""A while B""). If any such pair exists, it returns True. Otherwise, it returns False.",OTHER,,,False,True,False,False,,False,False,1111001.0,False,False,MIXED,,False,True,,True,True,True,True
+as,as,simultaneous,A vehicle slows down as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within the allowed range
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] == 'TURN':
+                # Check if there is an overlap between the two events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if they satisfy the conditions for ""A then B""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if they satisfy the conditions for ""A while B""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within the allowed range. If such an overlap exists, it returns `True`. The function also checks if the events satisfy the conditions for ""A then B"" or ""A while B"". If either condition is met, it returns `True`. If no overlapping events are found, it returns `False`.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,False,"TURN,DECELERATE",,,,
+as,as,simultaneous,A vehicle slows down as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Check if there are at least two events
+    if len(events) < 2:
+        return False
+
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+
+    # Iterate through each event to check if it matches any other event
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            # Check if the current event overlaps with another event
+            if events[i]['start'] <= events[j]['start']:
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                if overlap <= 0.5 or -0.5 <= events[j]['start'] - events[i]['end'] <= 5.0:
+                    return True
+
+    return False
+```
+
+This function first checks if there are at least two events. If not, it returns `False`. Then, it sorts the events by their start time. It iterates through each event and checks if it overlaps with any subsequent event within the specified conditions. If such an overlap exists, it returns `True`. If no overlapping events are found after checking all pairs, it returns `False`.",OTHER,,,False,True,False,False,,False,False,1101001.0,False,False,INTERP,,False,True,,False,False,True,True
+as,as,simultaneous,A vehicle reduces its speed as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within the allowed range
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] == 'TURN':
+                # Check if there is an overlap between the two events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if they satisfy the conditions for ""A then B""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if they satisfy the conditions for ""A while B""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within the allowed range. If such an overlap exists, it returns `True`. The function also checks if the events satisfy the conditions for ""A then B"" or ""A while B"". If either condition is met, it returns `True`. If no overlapping events are found, it returns `False`.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,False,"TURN,DECELERATE",,,,
+as,as,simultaneous,A vehicle reduces its speed as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    prev_end = None
+    
+    for event in events:
+        if 'DECELERATE' == event['type']:
+            if prev_end is not None:
+                # Check if there was an overlap with previous event
+                if overlap(event, prev_end) <= 0.5 or abs(event['start'] - prev_end['end']) > 5.0:
+                    return True
+            
+            prev_end = event
+    
+    return False
+
+# Helper function to calculate overlap between two events
+def overlap(a, b):
+    return max(0, min(a['end'], b['end']) - max(a['start'], b['start']))
+```
+
+This solution first sorts the events based on their start times. Then, it iterates through each event, checking if it overlaps with any previously recorded event. If it does, it checks if this overlap meets the criteria specified in the problem statement. The helper function `overlap` calculates the overlap between two events.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,True,DECELERATE,False,False,False,False
+as,as,simultaneous,A vehicle turns as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through each event to find another event that overlaps with it within a specified tolerance. If such an overlap exists, it returns `True`. Otherwise, after checking all pairs, it returns `False` indicating no matching events were found.",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle turns as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within the allowed range
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through each event to find another event that overlaps with it within the specified range. If such an overlap exists, it returns `True`. If no such overlap is found after checking all pairs, it returns `False`.",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle takes a turn as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] == 'STOP':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This solution first sorts the events based on their start times. Then, it iterates through each event to find another event that overlaps with it within the specified criteria. If such an overlap is found, it returns `True`. If no such overlap is found after checking all pairs, it returns `False`.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,"DECELERATE,STOP",False,False,False,False
+as,as,simultaneous,A vehicle takes a turn as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' and events[j]['type'] != 'STOP':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+                elif events[i]['start'] > events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                        return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates over all pairs of events to check if they satisfy the conditions specified in the problem statement. If any such pair is found, the function returns `True`. Otherwise, after checking all possible pairs, it returns `False`.",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,True,False,"DECELERATE,STOP",False,False,False,True
+as,as,simultaneous,A vehicle speeds up as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within the allowed range
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'DECELERATE':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through each event to find another event that overlaps with it within the allowed range. If such an event is found, it returns `True`. If no overlapping events are found after checking all pairs, it returns `False`.",OTHER,,,False,True,False,True,,False,False,0.0,False,False,NONE,,False,False,"TURN,DECELERATE",False,False,False,False
+as,as,simultaneous,A vehicle speeds up as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within the allowed range
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This solution checks all pairs of events where an acceleration occurs after a turn. It uses sorting to efficiently find overlapping events and applies the given conditions to determine if they match the specified sentence.",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle accelerates as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                # Check if there is an overlap between the two events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if they satisfy the conditions for ""A then B""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if they satisfy the conditions for ""A while B""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within certain criteria. If such an overlap exists, it returns `True`. Otherwise, it returns `False` after checking all possible pairs of events.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,False,"TURN,ACCELERATE",,,,
+as,as,simultaneous,A vehicle accelerates as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                # Check if there is an overlap between the two events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if they satisfy the conditions for ""A then B""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if they satisfy the conditions for ""A while B""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within certain criteria. If such an overlap exists, it returns `True`. The function also checks if the events satisfy the conditions for ""A then B"" or ""A while B"". If either condition is met, it returns `True`. If no overlapping events are found, it returns `False`.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,False,"TURN,ACCELERATE",,,,
+as,as,simultaneous,A vehicle turns as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'ACCELERATE':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This function first sorts the events based on their start times. Then, it iterates through each event to find another event that overlaps with it within a specified tolerance. If such an overlap exists, it returns `True`. If no such overlap is found after checking all pairs, it returns `False`.",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1001000.0,False,False,INTERP,,False,False,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle turns as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'TURN' and events[j]['type'] == 'ACCELERATE':
+                # Check if there is an overlap between the turn and accelerate events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if the overlap meets the criteria for ""turn then accelerate""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if the overlap meets the criteria for ""turn while accelerate""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within certain criteria. If such an overlap exists, it returns `True`. Otherwise, after checking all pairs, it returns `False`.",,runtime(while): KeyError: 'duration',,False,False,False,False,,False,False,,False,False,FAIL,runtime(while_same): KeyError: 'duration',True,False,"TURN,ACCELERATE",,,,
+as,as,simultaneous,A vehicle takes a turn as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'DECELERATE' or events[j]['type'] == 'ACCELERATE':
+                if events[i]['start'] < events[j]['start']:
+                    overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                    if overlap <= 0.5:
+                        return True
+    
+    return False
+```
+
+This solution first sorts the events based on their start times. Then, it iterates through all pairs of events to check if they satisfy the conditions specified in the problem statement. If any such pair is found, the function returns `True`. Otherwise, after checking all possible pairs, it returns `False`.",TURN THEN ACCELERATE,,,False,True,False,False,,False,False,1001001.0,False,False,INTERP,,False,False,"DECELERATE,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle takes a turn as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,zero_shot,B2 (Python),"```python
+def matches(events):
+    # Sort events by start time
+    events.sort(key=lambda x: x['start'])
+    
+    # Iterate through each event to check if any other event overlaps with it within certain criteria
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            if events[i]['type'] == 'ACCELERATE' and events[j]['type'] == 'TURN':
+                # Check if there is an overlap between the two events
+                overlap = max(0, min(events[i]['end'], events[j]['end']) - max(events[i]['start'], events[j]['start']))
+                
+                # Check if they satisfy the conditions for ""A then B""
+                if overlap <= 0.5:
+                    return True
+                
+                # Check if they satisfy the conditions for ""A while B""
+                elif overlap > 0.5 and overlap >= 0.8 * min(events[i]['duration'], events[j]['duration']):
+                    return True
+    
+    return False
+```
+
+This function first sorts the events by their start time. Then, it iterates through each event to check if any other event overlaps with it within certain criteria. If such an overlap exists, it returns `True`. Otherwise, it returns `False` after checking all possible pairs of events.",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,True,False,"TURN,ACCELERATE",False,False,False,True
+while,while,simultaneous,A vehicle slows down while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",DECELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle slows down while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",DECELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle reduces its speed while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",DECELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle reduces its speed while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",DECELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle turns while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while,while,simultaneous,A vehicle turns while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle takes a turn while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while,while,simultaneous,A vehicle takes a turn while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while,while,simultaneous,A vehicle speeds up while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle speeds up while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle accelerates while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle accelerates while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle turns while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle turns while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle takes a turn while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle takes a turn while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While slowing down, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While slowing down, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE DECELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,DECELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While speeding up, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While speeding up, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While accelerating, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While accelerating, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While turning, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While turning, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle slows down as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle slows down as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle reduces its speed as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle reduces its speed as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle turns as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle turns as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle speeds up as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle speeds up as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle accelerates as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle accelerates as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",ACCELERATE WHILE TURN,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle turns as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle turns as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle takes a turn as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+as,as,simultaneous,A vehicle takes a turn as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,balanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if overlap > 0.5 and overlap >= 0.8 * min(a['end'] - a['start'], b['end'] - b['start']):
+                return True
+    return False
+```",TURN WHILE ACCELERATE,,,True,True,True,True,,True,True,10000.0,True,True,OK,,True,False,"TURN,ACCELERATE",True,True,False,False
+while,while,simultaneous,A vehicle slows down while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle slows down while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle reduces its speed while turning.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle reduces its speed while taking a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle turns while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while,while,simultaneous,A vehicle turns while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while,while,simultaneous,A vehicle takes a turn while slowing down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while,while,simultaneous,A vehicle takes a turn while reducing its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while,while,simultaneous,A vehicle speeds up while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while,while,simultaneous,A vehicle speeds up while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while,while,simultaneous,A vehicle accelerates while turning.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while,while,simultaneous,A vehicle accelerates while taking a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while,while,simultaneous,A vehicle turns while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+while,while,simultaneous,A vehicle turns while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+while,while,simultaneous,A vehicle takes a turn while speeding up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+while,while,simultaneous,A vehicle takes a turn while accelerating.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+while_fronted,while,simultaneous,"While slowing down, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While slowing down, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle turns.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While reducing its speed, a vehicle takes a turn.","{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle slows down.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+while_fronted,while,simultaneous,"While taking a turn, a vehicle reduces its speed.","{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'DECELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN DECELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While speeding up, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While speeding up, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While accelerating, a vehicle turns.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While accelerating, a vehicle takes a turn.","{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While turning, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+while_fronted,while,simultaneous,"While taking a turn, a vehicle speeds up.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'TURN' or b['type'] != 'ACCELERATE':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",TURN THEN ACCELERATE,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+while_fronted,while,simultaneous,"While taking a turn, a vehicle accelerates.","{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+as,as,simultaneous,A vehicle slows down as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,0,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle slows down as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,1,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle reduces its speed as it turns.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,10,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle reduces its speed as it takes a turn.,"{""events"": {""e1"": ""DECELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",DECELERATE,DECELERATE,WHILE,TURN,11,DECELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,True,False
+as,as,simultaneous,A vehicle turns as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,0,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle turns as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,1,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it slows down.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,10,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it reduces its speed.,"{""events"": {""e1"": ""TURN"", ""e2"": ""DECELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,DECELERATE,11,TURN+DECELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'DECELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",DECELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,DECELERATE",False,False,False,True
+as,as,simultaneous,A vehicle speeds up as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,0,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle speeds up as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,1,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle accelerates as it turns.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,10,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle accelerates as it takes a turn.,"{""events"": {""e1"": ""ACCELERATE"", ""e2"": ""TURN""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",ACCELERATE,ACCELERATE,WHILE,TURN,11,ACCELERATE+TURN,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,1000000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,True,False
+as,as,simultaneous,A vehicle turns as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,0,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+as,as,simultaneous,A vehicle turns as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,1,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it speeds up.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,10,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
+as,as,simultaneous,A vehicle takes a turn as it accelerates.,"{""events"": {""e1"": ""TURN"", ""e2"": ""ACCELERATE""}, ""relation"": {""op"": ""WHILE"", ""args"": [""e1"", ""e2""]}}",TURN,TURN,WHILE,ACCELERATE,11,TURN+ACCELERATE,counterbalanced,B2 (Python),"```python
+def matches(events):
+    for a in events:
+        for b in events:
+            if a is b or a['type'] != 'ACCELERATE' or b['type'] != 'TURN':
+                continue
+            overlap = max(0.0, min(a['end'], b['end']) - max(a['start'], b['start']))
+            if a['start'] < b['start'] and overlap <= 0.5 and -0.5 <= b['start'] - a['end'] <= 5.0:
+                return True
+    return False
+```",ACCELERATE THEN TURN,,,False,True,False,True,,False,False,100000.0,False,False,INTERP,,False,True,"TURN,ACCELERATE",False,False,False,True
